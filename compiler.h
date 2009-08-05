@@ -11,24 +11,23 @@
 #ifndef compilerH
 #define compilerH      
 /******************************************************************************/
-#define SZ_VERSION		"1.0.0"
-#define SZ_BUILD_DATE	"April 12th, 2005" //"December 19th, 2003"
+#define SZ_VERSION		"1.0.1"
+#define SZ_BUILD_DATE	"August 3rd 2009" // "April 12th, 2005" //"December 19th, 2003"
 
 /******************************************************************************/
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include <conio.h> 
-#include <stdlib.h>     
-#include <ctype.h>  
+#include <stdlib.h> 
+#include <ctype.h>
 #include <malloc.h>
 
 #include "typedefs.h"
 
-#include "system\message.h"
-#include "system\memalloc.h"
-#include "system\fileio.h"
-#include "system\config.h"
+#include "system/message.h"
+#include "system/memalloc.h"
+#include "system/fileio.h"
+#include "system/config.h"
 
 #include "init.h"
 #include "list.h"
@@ -46,13 +45,13 @@
 #include "functions.h"
 #include "labels.h"
 
-#include "output\outbuf.h"
-#include "output\fixoffs.h"
-#include "output\writecode.h"
-#include "output\scrbin.h"
-#include "output\banks.h"
+#include "output/outbuf.h"
+#include "output/fixoffs.h"
+#include "output/writecode.h"
+#include "output/scrbin.h"
+#include "output/banks.h"
 
-#include "data\data.h"
+#include "data/data.h"
 
 /******************************************************************************/
 #define STRCMP	ssStrCmp

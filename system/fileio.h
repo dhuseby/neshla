@@ -11,8 +11,8 @@
 #ifndef _fileio_h_
 #define _fileio_h_
 /******************************************************************************/
-#include "compiler.h"
-#include "list.h"
+#include "../compiler.h"
+#include "../list.h"
 
 #define PATH_SEP '\\'
 /******************************************************************************/

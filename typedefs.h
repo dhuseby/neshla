@@ -12,13 +12,7 @@
 #define _typedefs_h_
 /*********************************************************************/
 
-#ifdef _SYS_VS
-	#define FASTCALL
-#endif
-#ifdef _SYS_BCB
-	#define FASTCALL __fastcall
-#endif
-
+#define FASTCALL
 
 /* data types */
 typedef unsigned char		U8;

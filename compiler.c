@@ -9,16 +9,12 @@
 
 /******************************************************************************/
 #pragma hdrstop
-#ifdef _SYS_BCB
-	#include <dir.h>
-#else
-	#include <direct.h>
-#endif
+#include <unistd.h>
 #include <time.h>
 #include "compiler.h"
 /******************************************************************************/
 #pragma package(smart_init)
-
+#define CLK_TCK CLOCKS_PER_SEC
 /******************************************************************************/
 
 void PrintTime(void);
@@ -33,7 +29,7 @@ int main(int argc, char* argv[])
 
 	message(0,"Nintendo NES High Level Assembler");
     message(0,"Version %s, %s",SZ_VERSION,SZ_BUILD_DATE);
-    message(0,"By Brian Provinciano :: http://www.bripro.com");
+    message(0,"By David Huseby and Brian Provinciano :: http://www.linuxprogrammer.org");
     message(0,"");
 
     if(argc < 1)
@@ -52,7 +48,7 @@ int main(int argc, char* argv[])
             s--;
         }
     } else {
-		if(!_getcwd(szprogdir, sizeof(szprogdir)-1))
+		if(!getcwd(szprogdir, sizeof(szprogdir)-1))
         	return 3;
     }
 
@@ -99,8 +95,6 @@ int main(int argc, char* argv[])
 		ShutDownCompiler();   
     	PrintTime();
 		message(MSG_COMPSUCCESS);
-        //if(warnCnt)
-       	//	getch();
     } else // automatically shuts down
     	fatal(FTL_COMPFAIL);
     message(0,"");

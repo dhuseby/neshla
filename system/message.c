@@ -10,7 +10,7 @@
 /******************************************************************************/
 #include <stdlib.h>
 #include <stdarg.h>
-#include "..\compiler.h"
+#include "../compiler.h"
 /******************************************************************************/
 int errorCnt,warnCnt,todoCnt;
 BOOL COMPILE_SUCCESS;
@@ -307,7 +307,6 @@ void ShutDownMessages()
 void msgQuit(void)
 {
     ShutDownCompiler();
-    //getch();
     bexit(1);
 }
 /*----------------------------------------------------------------------------*/
@@ -397,8 +396,6 @@ void notice(int msg, char *str, ...)
 		vprintf(str, argptr);                                                            \
     	va_end(argptr);
 
-        //getch();
-
     	if(todoCnt++ >= cfg.msg.tell.max)
          	msgQuit();
     }
@@ -436,8 +433,6 @@ void message(int errnum, ...)
         s = va_arg(argptr, char*);
 		vprintf(s, argptr);
     	va_end(argptr);
-
-    	//getch();
     } else if(errnum==0) {
     	va_start(argptr, errnum);
         s = va_arg(argptr, char*);
