@@ -1,0 +1,53 @@
+VARIABLE LISTING
+================
+FILE: E:\sf\neshla\source\_democode\game.as
+
+OFFS: (SIZE)[ARRY]: CAST	NAME
+----- ------------- ----	-----------------------------------------
+4016: (1   )      : byte	JOYSTICK_CNT0
+4017: (1   )      : byte	JOYSTICK_CNT1
+4000: (1   )      : byte	SQUAREWAVEA_CNT0
+4001: (1   )      : byte	SQUAREWAVEA_CNT1
+4002: (1   )      : byte	SQUAREWAVEA_FREQ0
+4003: (1   )      : byte	SQUAREWAVEA_FREQ1
+4004: (1   )      : byte	SQUAREWAVEB_CNT0
+4005: (1   )      : byte	SQUAREWAVEB_CNT1
+4006: (1   )      : byte	SQUAREWAVEB_FREQ0
+4007: (1   )      : byte	SQUAREWAVEB_FREQ1
+4008: (1   )      : byte	TRIANGLEWAVE_CNT0
+4009: (1   )      : byte	TRIANGLEWAVE_CNT1
+400A: (1   )      : byte	TRIANGLEWAVE_FREQ0
+400B: (1   )      : byte	TRIANGLEWAVE_FREQ1
+400C: (1   )      : byte	NOISE_CNT0
+400D: (1   )      : byte	NOISE_CNT1
+400E: (1   )      : byte	NOISE_FREQ0
+400F: (1   )      : byte	NOISE_FREQ1
+4010: (1   )      : byte	PCM_CNT
+4011: (1   )      : byte	PCM_VOLUMECNT
+4012: (1   )      : byte	PCM_ADDRESS
+4013: (1   )      : byte	PCM_LENGTH
+4015: (1   )      : byte	SND_CNT
+0000: (1   )      : byte	_ppu_ctl0
+0001: (1   )      : byte	_ppu_ctl1
+0002: (2   )      : pointer	_pal_ptr
+0004: (1   )      : byte	_joypad
+0005: (1   )      : byte	_joypad_prev
+0006: (1   )      : byte	_b_temp
+0007: (2   )      : word	_w_temp
+0009: (2   )      : pointer	_p_temp
+000B: (2   )      : pointer	_jsrind_temp
+000D: (1   )      : byte	_b_remainder
+000E: (1   )      : byte	_random_value
+000F: (1   )      : byte	_random_ticks
+0010: (2   )      : pointer	_mem_src
+0012: (2   )      : pointer	_mem_dest
+0014: (1   )      : byte	pBankA000_prev
+0015: (1   )      : byte	pBankA000_cur
+0016: (1   )      : byte	counter
+0017: (1   )      : byte	palcol
+0018: (2   )      : pointer	paddr
+001A: (2   )      : pointer	pstr
+001C: (1   )[64  ]: char	msgbuf
+C050: (1   )[8   ]: byte	setamt
+C156: (1   )[27  ]: char	strTitle
+C171: (1   )[14  ]: char	strHello
