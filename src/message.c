@@ -279,7 +279,10 @@ U8 *cpos;
 /******************************************************************************/
 void InitMessages()
 {
-	logFile = fopen("e:\\lsi\\scripts\\log.txt","w");
+    char log[1024];
+    sprintf(log, "%slog.txt", szoutdir);
+    message(0, "opening log: %s", log);
+	logFile = fopen(log, "w");
     curline = -1;
 }
 /******************************************************************************/

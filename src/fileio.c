@@ -154,7 +154,7 @@ char *FASTCALL SwapFileExt(char *filename, char *newext)
 void FASTCALL FixPath(char *s)
 {
 	int l=(int)strlen(s)-1;
-    if(s[l]=='\\')
+    if(s[l]=='/')
      	s[l]='\0';
 }
 /*********************************************************************/
@@ -162,8 +162,8 @@ char *FASTCALL FixPathSet(char *s)
 {
 	int l=(int)strlen(s)-1;
     strcpy(szFile,s);
-    if(szFile[l]!='\\') {
-    	szFile[l+1]='\\';
+    if(szFile[l]!='/') {
+    	szFile[l+1]='/';
     	szFile[l+2]='\0';
     }
     return szFile;
@@ -224,6 +224,19 @@ BOOL FASTCALL SearchStringList(STRLIST **plist, char *label)
     }
     return FALSE;
 }
+/******************************************************************************/
+BOOL PrintStringList(STRLIST *plist)
+{
+    STRLIST *list = plist;
+    while(list)
+    {
+        if(list->string)
+            message(0, list->string);
+        list = list->next;
+    }
+    return TRUE;
+}
+
 /******************************************************************************/
 BOOL FASTCALL AddStringList(STRLIST **plist, char *label)
 {

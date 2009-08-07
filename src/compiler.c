@@ -22,7 +22,7 @@ void PrintTime(void);
 int main(int argc, char* argv[])
 {
 	int c,i,l;
-    char *s,*p;
+    char *s,*p, *tmp;
 
 	clock_t start, end;
 	start = clock();
@@ -39,53 +39,50 @@ int main(int argc, char* argv[])
     if(argc < 1)
     	return 3;
 
-    s = argv[0];
-    if(strlen(s) > 3 && (s[1]==':')) {
-    	strcpy(szprogdir,argv[0]);
-    	l = strlen(szprogdir)-1;
-        s = szprogdir+l;
-        while(l>0) {
-         	if(*s == '\\') {
-            	*s = '\0';
-                break;
-            }
-            s--;
-        }
-    } else {
-		if(!getcwd(szprogdir, sizeof(szprogdir)-1))
-        	return 3;
-    }
+    if(!getcwd(szprogdir, sizeof(szprogdir)-1))
+        return 3;
 
-    l = strlen(szprogdir);
-    if(l && szprogdir[l-1]!='\\') {
-    	szprogdir[l]	= '\\';
-    	szprogdir[l+1]	= '\0';
-    }
-                
-	if(!InitConfig()) return 4;
+    tmp = FixPathSet(szprogdir);
+    STRCPY(szprogdir, tmp);
+    
+    /* set the default values on the config settings */
+	if(!InitConfig()) 
+        return 4;
+
+    /* parse the command line arguments */
     ParseCommandLine(argc, argv);
 
-
-	sysDirList		=
-    includeDirList	=
+	sysDirList		= NULL;
+    includeDirList	= NULL;
     libDirList		= NULL;
 
-    l = strlen(szoutdir);
-    if(l && szoutdir[l-1]!='\\') {
-     	szoutdir[l] = '\\';
-     	szoutdir[l+1] = '\0';
-    }
-	strcpy(outDir,szoutdir);
+    /* make sure there is a trailing slash on output dir */
+    tmp = FixPathSet(szoutdir);
+    STRCPY(szoutdir, tmp);
+	strcpy(outDir, szoutdir);
 
-    sprintf(szTemp,"%s",szprogdir);
+    /* add folders to default include list */
+    message(0, "prog dir: %s", szprogdir);
+    sprintf(szTemp, "%s", szprogdir);
     AddDirList(&sysDirList, szTemp);
-    sprintf(szTemp,"%sinclude\\",szprogdir);
+    sprintf(szTemp, "%sinclude/", szprogdir);
+    message(0, "include dir: %s", szTemp);
     AddDirList(&includeDirList, szTemp);
-    sprintf(szTemp,"%slib\\",szprogdir);
+    sprintf(szTemp, "%slib/", szprogdir);
+    message(0, "lib dir: %s", szTemp);
     AddDirList(&libDirList, szTemp);
 
-	if(InitializeCompiler()) {
-		message(0,"Compiling file: %s ...", szfilename);
+    /* initialize and run the compiler */
+	if(InitializeCompiler()) 
+    {
+	    message(0, "System Dir List:");
+        PrintStringList(sysDirList);
+        message(0, "System Include List:");
+        PrintStringList(includeDirList);
+        message(0, "System Lib List:");
+        PrintStringList(libDirList);
+        
+        message(0,"Compiling file: %s ...", szfilename);
     	DoCompile(szfilename);
     }
 
@@ -94,8 +91,8 @@ int main(int argc, char* argv[])
 		printf("The time was: %f\n", fl);
 	}
 
-
-    if(COMPILE_SUCCESS) {
+    if(COMPILE_SUCCESS) 
+    {
 		ShutDownCompiler();   
     	PrintTime();
 		message(MSG_COMPSUCCESS);

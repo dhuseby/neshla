@@ -12,6 +12,7 @@
 #define _typedefs_h_
 /*********************************************************************/
 
+/* kill FASTCALL...nobody uses this anymore */
 #define FASTCALL
 
 /* data types */
@@ -21,7 +22,7 @@ typedef unsigned short		U16;
 typedef signed short		S16;
 typedef unsigned long		U32;
 typedef signed long			S32;
-typedef unsigned short		BOOL;
+typedef int		            BOOL;
 
 #define TRUE 				1
 #define FALSE 				0

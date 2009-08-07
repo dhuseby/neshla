@@ -7,28 +7,32 @@
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
 #ifndef configH
 #define configH
-/******************************************************************************/
-typedef struct {
-	struct {
 
-		struct {
+typedef struct config_s 
+{
+	struct 
+    {
+		struct 
+        {
         	int		max;
             int		level;
         } warning;
 
-		struct {
+		struct 
+        {
         	int		max;
         } error;
 
-		struct {
+		struct 
+        {
         	BOOL	enabled;
         	int		max;
         } todo;
 
-		struct {
+		struct 
+        {
         	BOOL	enabled;
         	int		max;
         } tell;
@@ -39,60 +43,34 @@ typedef struct {
     	//BOOL stripUnused;
     //} func;
 
-    struct {
-    	BOOL	vars,functions,banklist,sourcesize;
+    struct 
+    {
+    	BOOL	vars;
+        BOOL    functions;
+        BOOL    banklist;
+        BOOL    sourcesize;
     } list;
 
-    struct {
+    struct
+    {
     	BOOL	rawPrgChr;
         BOOL	padUp;
         BOOL	enableHeader;
     } output;
-} CONFIG;
+} config_t;
+typedef config_t CONFIG;
+
+// extern global configuration switches
 extern CONFIG cfg;
 
+// extern global path configuration parameters
+extern char szfilename[4096];
+extern char szoutdir[4096];
+extern char szprogdir[4096];
 
-enum {
-	OPPARAMTYPE_NONE	= 0,
-	OPPARAMTYPE_INTEGER	= 1,
-	OPPARAMTYPE_STRING	= 2,
-};
 
-typedef struct {
-	const char *label;
-	U16 paramtype;
-	U16 defaultvalue;
-	const char *desc;
-} COMOP;
-
-enum {
-	COMOP_o,
-	COMOP_h,
-	
-	COMOP_emax,
-	COMOP_wmax,
-	COMOP_wlevel,
-	COMOP_todo,
-	COMOP_todomax,
-	COMOP_tell,
-	COMOP_tellmax,
-	
-	COMOP_listvars,
-	COMOP_listfuncs,
-	COMOP_listbanks,
-	COMOP_listsrc,
-	
-	COMOP_outraw,
-	COMOP_nopadding,
-	COMOP_noheader,
-	
-	COMOP_total	
-};
-     
-extern char szfilename[4096],szoutdir[4096],szprogdir[4096];
-/******************************************************************************/
 BOOL InitConfig(void);
 void ParseCommandLine(int argc, char* argv[]);
-/******************************************************************************/
+
 #endif
-/******************************************************************************/
+

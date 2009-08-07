@@ -60,6 +60,6 @@
  
 #chr.banksize 		8K
 #chr.bank 			CHR_FONT_BANK
-#incbin "FONT2.CHR"
+#incbin "font2.chr"
 #chr.end   
 /******************************************************************************/
