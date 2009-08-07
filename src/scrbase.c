@@ -3,9 +3,9 @@
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
  *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
- *  This program is free software. 
- *	You may use this code for anything you wish.
- *	It comes with no warranty.
+ *  This program is free software.
+ * You may use this code for anything you wish.
+ * It comes with no warranty.
  ***************************************************************************/
 
 #include "compiler.h"
@@ -16,155 +16,171 @@ BOOL PRECOMPILING;
 
 INSCRIPT * AddScript(INSCRIPT *parent, char *filename, DEFINE *def, FUNC *macro)
 {
-	INSCRIPT *scr;
+    INSCRIPT *scr;
     char *path;
 
-    scr = (INSCRIPT*)ssAlloc(sizeof(INSCRIPT)); 
+    scr = (INSCRIPT*)ssAlloc(sizeof(INSCRIPT));
 
-    scr->line			= 1;
-	scr->flags			= 0;
-	scr->ifdefTrack		= NULL;
+    scr->line   = 1;
+    scr->flags   = 0;
+    scr->ifdefTrack  = NULL;
 
-    if(!STRCMP(filename,"TITLE_BORDER_OFFSET"))
-    	scr=scr;
-              
-	scr->location.bank	= NULL;
-    if(macro) {
-		scr->path		= NULL;
-		scr->filename	= strdup(filename);
-    	scr->buffer 	=
-        scr->inPtr 		= strdup(macro->macDef);
-        scr->inLen		= (S32)strlen( scr->buffer );
-        scr->flags		|= SCRFLAG_MACRO;
-    } else if(def) { // define
-		scr->path		= NULL;
-		scr->filename	= strdup(filename);
-       	if(!def->definition)
-        	def->definition=def->definition;
-    	scr->buffer 	=
-        scr->inPtr 		= strdup(def->definition);
-        scr->inLen		= (S32)strlen( scr->buffer );
-    } else {
+    if (!STRCMP(filename,"TITLE_BORDER_OFFSET"))
+        scr=scr;
 
-		scr->path		= NULL; // so frees are good
-		scr->filename	= NULL;
+    scr->location.bank = NULL;
+    if (macro)
+    {
+        scr->path  = NULL;
+        scr->filename = strdup(filename);
+        scr->buffer  =
+            scr->inPtr   = strdup(macro->macDef);
+        scr->inLen  = (S32)strlen( scr->buffer );
+        scr->flags  |= SCRFLAG_MACRO;
+    }
+    else if (def)   // define
+    {
+        scr->path  = NULL;
+        scr->filename = strdup(filename);
+        if (!def->definition)
+            def->definition=def->definition;
+        scr->buffer  =
+            scr->inPtr   = strdup(def->definition);
+        scr->inLen  = (S32)strlen( scr->buffer );
+    }
+    else
+    {
 
-    	if(curBank) {
-        	scr->location.bank	= curBank;
-        	scr->location.ptr	= curBank->ptr;
+        scr->path  = NULL; // so frees are good
+        scr->filename = NULL;
+
+        if (curBank)
+        {
+            scr->location.bank = curBank;
+            scr->location.ptr = curBank->ptr;
         }
 
-		if((scr->buffer	= scr->inPtr = (char*)LoadFile(DIR_SCRIPT|DIR_LIB,filename,&scr->inLen))==NULL) {
-    		ssFree(scr->path);
-    		ssFree(scr->filename);
+        if ((scr->buffer = scr->inPtr = (char*)LoadFile(DIR_SCRIPT|DIR_LIB,filename,&scr->inLen))==NULL)
+        {
+            ssFree(scr->path);
+            ssFree(scr->filename);
             ssFree(scr);
-			fatal(FTL_OPENFILE_IN, filename);
-		}
+            fatal(FTL_OPENFILE_IN, filename);
+        }
 
         strcpy(szTemp,szFile);
-    	path = (ExtractFilePath(szTemp));
-        scr->path		= strdup(path);
-		scr->filename	= strdup(ExtractFileName(szTemp));
+        path = (ExtractFilePath(szTemp));
+        scr->path  = strdup(path);
+        scr->filename = strdup(ExtractFileName(szTemp));
 
-    	if(FindScript(firstScript, scr->path, scr->filename)) {
-    		ssFree(scr->path);
-    		ssFree(scr->filename);
-    		ssFree(scr->buffer);
+        if (FindScript(firstScript, scr->path, scr->filename))
+        {
+            ssFree(scr->path);
+            ssFree(scr->filename);
+            ssFree(scr->buffer);
             ssFree(scr);
-			error(ERR_SELFNESTEDSOURCE, filename);
-        	return FALSE;//TRUE;
-    	}
-    }        
+            error(ERR_SELFNESTEDSOURCE, filename);
+            return FALSE;//TRUE;
+        }
+    }
 
-	if(parent)
-    	parent->child = scr;
+    if (parent)
+        parent->child = scr;
 
-    scr->parent 		= parent;
-    scr->child			= NULL;
-    
-	return scr;
-}     
+    scr->parent   = parent;
+    scr->child   = NULL;
+
+    return scr;
+}
 
 
 INSCRIPT * DiscardScript(INSCRIPT *scr)
 {
-	INSCRIPT *parent=NULL;
-	if(scr) {
-    	if(cfg.list.sourcesize && scr->location.bank) {
-        	long size;
+    INSCRIPT *parent=NULL;
+    if (scr)
+    {
+        if (cfg.list.sourcesize && scr->location.bank)
+        {
+            long size;
 
-        	fprintf(fSrcList,"FILE: %s%s\n",scr->path,scr->filename);
-        	fprintf(fSrcList,"\tSpanning Bank(s) %s to %s\n",
-            	scr->location.bank->label, curBank?curBank->label:"-");
-        	fprintf(fSrcList,"\tStart Bank @ Bin: $%08X, Org: $%04X, Offset: $%04X\n",
-            	(unsigned int)GetBankBinOffset(scr->location.bank), 
-                (unsigned int)scr->location.bank->org,
-                (unsigned int)BANK_OFFSET_OF(scr->location.bank,scr->location.ptr));
-        	if(curBank)
-            	fprintf(fSrcList,"\tEnd   Bank @ Bin: $%08X, Org: $%04X, Offset: $%04X\n",
-            		(unsigned int)GetBankBinOffset(curBank),
-                    (unsigned int)curBank->org,
-                    (unsigned int)BANK_OFFSET(curBank));
+            fprintf(fSrcList,"FILE: %s%s\n",scr->path,scr->filename);
+            fprintf(fSrcList,"\tSpanning Bank(s) %s to %s\n",
+                    scr->location.bank->label, curBank?curBank->label:"-");
+            fprintf(fSrcList,"\tStart Bank @ Bin: $%08X, Org: $%04X, Offset: $%04X\n",
+                    (unsigned int)GetBankBinOffset(scr->location.bank),
+                    (unsigned int)scr->location.bank->org,
+                    (unsigned int)BANK_OFFSET_OF(scr->location.bank,scr->location.ptr));
+            if (curBank)
+                fprintf(fSrcList,"\tEnd   Bank @ Bin: $%08X, Org: $%04X, Offset: $%04X\n",
+                        (unsigned int)GetBankBinOffset(curBank),
+                        (unsigned int)curBank->org,
+                        (unsigned int)BANK_OFFSET(curBank));
             size = GetBankBinLength(scr->location.bank, scr->location.ptr, curBank);
-        	fprintf(fSrcList,"\tSize   in Binary: $%08X (%02f KBytes)\n",
-            	(unsigned int)size,(float)size/1024.0);
+            fprintf(fSrcList,"\tSize   in Binary: $%08X (%02f KBytes)\n",
+                    (unsigned int)size,(float)size/1024.0);
         }
 
-    	/*TODO fix this: if( (!(scr->flags&SCRFLAG_CLONE)) && (scr->path) && (scr->ifdefCount) )
-        	error(ERR_NEEDENDIF);
-        */
-    	DiscardScript(scr->child);
+        /*TODO fix this: if( (!(scr->flags&SCRFLAG_CLONE)) && (scr->path) && (scr->ifdefCount) )
+            error(ERR_NEEDENDIF);
+           */
+        DiscardScript(scr->child);
 
-    	parent = scr->parent;
-        if(parent) {
-        	parent->child = NULL;
+        parent = scr->parent;
+        if (parent)
+        {
+            parent->child = NULL;
         }
-    	if(scr==curScript)
-        	curScript	= parent;
-    	if(scr==firstScript)
-        	firstScript	= parent;
+        if (scr==curScript)
+            curScript = parent;
+        if (scr==firstScript)
+            firstScript = parent;
 
-        if(!(scr->flags&SCRFLAG_CLONE) && !(scr->flags&SCRFLAG_LOCKED)) {
-            if(scr->flags&SCRFLAG_MACRO) {
-            	ReleaseCurMacro();
-            } else     
-        		ssFree(scr->buffer);
-        	ssFree(scr->filename);
-        	ssFree(scr->path);
+        if (!(scr->flags&SCRFLAG_CLONE) && !(scr->flags&SCRFLAG_LOCKED))
+        {
+            if (scr->flags&SCRFLAG_MACRO)
+            {
+                ReleaseCurMacro();
+            }
+            else
+                ssFree(scr->buffer);
+            ssFree(scr->filename);
+            ssFree(scr->path);
         }
-    	ssFree(scr);
+        ssFree(scr);
     }
     return parent;
-}     
+}
 
 
 INSCRIPT * CloneScript(INSCRIPT *scr)
 {
-	INSCRIPT *clone=NULL;
-	if(scr) {
+    INSCRIPT *clone=NULL;
+    if (scr)
+    {
         clone = (INSCRIPT*)ssAlloc(sizeof(INSCRIPT));
-      	memcpy(clone,scr,sizeof(INSCRIPT));
+        memcpy(clone,scr,sizeof(INSCRIPT));
 
-    	if(scr->flags & SCRFLAG_LOCKED)
-        	message(1,"Attempt to clone locked script!");
+        if (scr->flags & SCRFLAG_LOCKED)
+            message(1,"Attempt to clone locked script!");
 
         clone->location.bank = NULL;
-    	clone->flags |= SCRFLAG_CLONE;
-    	clone->child = CloneScript(scr->child);
-        if(clone->child)
-        	clone->child->parent = clone;
+        clone->flags |= SCRFLAG_CLONE;
+        clone->child = CloneScript(scr->child);
+        if (clone->child)
+            clone->child->parent = clone;
     }
     return clone;
-}  
+}
 
 
 INSCRIPT * FindScript(INSCRIPT *scr, char *path, char *filename)
 {
-	while(scr) {
-    	if( !strcmp(scr->filename,filename) &&
-        	(!path || !scr->path || !strcmp(scr->path,path)) )
-            	return scr;
-    	scr = scr->child;
+    while (scr)
+    {
+        if ( !strcmp(scr->filename,filename) &&
+                (!path || !scr->path || !strcmp(scr->path,path)) )
+            return scr;
+        scr = scr->child;
     }
     return scr;
 }
@@ -172,50 +188,53 @@ INSCRIPT * FindScript(INSCRIPT *scr, char *path, char *filename)
 
 SCRIPTSTATE * SaveScriptState()
 {
- 	SCRIPTSTATE *state = (SCRIPTSTATE*) ssAlloc(sizeof(SCRIPTSTATE)); 
+    SCRIPTSTATE *state = (SCRIPTSTATE*) ssAlloc(sizeof(SCRIPTSTATE));
     INSCRIPT *scr;
 
-    //state->szTemp		= strdup(szTemp);
-	state->firstScript	= firstScript;
-	state->curScript	= curScript;
+    //state->szTemp  = strdup(szTemp);
+    state->firstScript = firstScript;
+    state->curScript = curScript;
 
-    firstScript			= CloneScript(firstScript);
-    if(!firstScript)
-		message(1,"Failed to clone scripts!");
-    curScript			= FindScript(firstScript, curScript->path, curScript->filename);
-    if(!curScript)
-		message(1,"Failed to locate active clone script!");
-                      
+    firstScript   = CloneScript(firstScript);
+    if (!firstScript)
+        message(1,"Failed to clone scripts!");
+    curScript   = FindScript(firstScript, curScript->path, curScript->filename);
+    if (!curScript)
+        message(1,"Failed to locate active clone script!");
+
     scr = state->firstScript;
-    while(scr) {
-    	scr->flags |= SCRFLAG_LOCKED;
-    	scr = scr->child;
+    while (scr)
+    {
+        scr->flags |= SCRFLAG_LOCKED;
+        scr = scr->child;
     }
     return state;
-}        
+}
 
 
 void RestoreScriptState(SCRIPTSTATE **pstate)
 {
-	SCRIPTSTATE *state=*pstate;
+    SCRIPTSTATE *state=*pstate;
     INSCRIPT *scr;
 
-	if(state) {
-		DiscardScript(firstScript);
+    if (state)
+    {
+        DiscardScript(firstScript);
 
         scr = firstScript = state->firstScript;
-		while(scr) {
-    		scr->flags &= ~SCRFLAG_LOCKED;
-    		scr = scr->child;
-    	}
+        while (scr)
+        {
+            scr->flags &= ~SCRFLAG_LOCKED;
+            scr = scr->child;
+        }
 
-    	//strcpy(szTemp,state->szTemp);
+        //strcpy(szTemp,state->szTemp);
         //ssFree(state->szTemp);
         curScript = state->curScript;
 
-    	ssFree(*pstate);
+        ssFree(*pstate);
     }
-}   
+}
 
 
 void DiscardScriptState(SCRIPTSTATE **pstate)
@@ -229,66 +248,74 @@ BOOL CompileScript(char *filename, DEFINE *def, FUNC *macro)
     S16 brackCnt;
     INSCRIPT *s;
 
-    if( (!filename && !def && !macro) || (def && !firstScript) )
-    	return FALSE;
+    if ( (!filename && !def && !macro) || (def && !firstScript) )
+        return FALSE;
 
-	s = AddScript(curScript, filename, def, macro);
-    if(!s) return FALSE;
+    s = AddScript(curScript, filename, def, macro);
+    if (!s) return FALSE;
     curScript = s;
-	if(!firstScript)
-		firstScript = curScript;
+    if (!firstScript)
+        firstScript = curScript;
 
-	if(curScript == firstScript) {
+    if (curScript == firstScript)
+    {
 
-    	if(cfg.list.sourcesize) {
-    		char *s = strdup(SwapFileExt(curScript->filename,".slst"));
-    		if((fSrcList = OpenFile(DIR_GAME,s,"wb"))==NULL) {
-    			 fatal(FTL_OPENINGFILEWRITE,s);
-    		}
-        	ssFree(s);
+        if (cfg.list.sourcesize)
+        {
+            char *s = strdup(SwapFileExt(curScript->filename,".slst"));
+            if ((fSrcList = OpenFile(DIR_GAME,s,"wb"))==NULL)
+            {
+                fatal(FTL_OPENINGFILEWRITE,s);
+            }
+            ssFree(s);
 
-        	fprintf(fSrcList,
-     	   		"SOURCE LISTING\n"
-     	   		"==============\n");
-    	}
+            fprintf(fSrcList,
+                    "SOURCE LISTING\n"
+                    "==============\n");
+        }
 
-    	state 			= SaveScriptState();
-        brackCnt		= 0;
-        PRECOMPILING	= TRUE; 
-        invlabel		= 0;
-		GetCode(CF_GETNEXTWORD, &brackCnt);
+        state    = SaveScriptState();
+        brackCnt  = 0;
+        PRECOMPILING = TRUE;
+        invlabel  = 0;
+        GetCode(CF_GETNEXTWORD, &brackCnt);
         RestoreScriptState(&state);
-        if(COMPILE_SUCCESS) {
-    		FreeLists(&defList);
-            defListPtr 		=
-            defList 		= NULL;  
-   			enumClasses		= NULL;
-       		brackCnt 		= 0;
-        	PRECOMPILING	= FALSE;
+        if (COMPILE_SUCCESS)
+        {
+            FreeLists(&defList);
+            defListPtr   =
+                defList   = NULL;
+            enumClasses  = NULL;
+            brackCnt   = 0;
+            PRECOMPILING = FALSE;
 
             curBank = NULL;
-            if(curFunction) {
-            	error(ERR_FUNCNOTTERM,curFunction->label);
-             	ReleaseCurFunc();
+            if (curFunction)
+            {
+                error(ERR_FUNCNOTTERM,curFunction->label);
+                ReleaseCurFunc();
             }
-            if(curVar) {
-            	error(ERR_VARNOTTERM,curVar->label);
-             	ReleaseCurVar();
+            if (curVar)
+            {
+                error(ERR_VARNOTTERM,curVar->label);
+                ReleaseCurVar();
             }
 
-			logenter();  
-        	invlabel		= 0;
-			GetCode(CF_GETNEXTWORD, &brackCnt);
+            logenter();
+            invlabel  = 0;
+            GetCode(CF_GETNEXTWORD, &brackCnt);
         }
-        if(COMPILE_SUCCESS) {
+        if (COMPILE_SUCCESS)
+        {
 
-        	if(cfg.msg.warning.level >= 2) {
-             	CheckVariableCalls();
+            if (cfg.msg.warning.level >= 2)
+            {
+                CheckVariableCalls();
             }
 
-         	AssembleScriptBinary();
+            AssembleScriptBinary();
         }
-    	DiscardScript(curScript);
+        DiscardScript(curScript);
         return COMPILE_SUCCESS;
     }
     return TRUE;

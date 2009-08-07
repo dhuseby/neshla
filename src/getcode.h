@@ -2,9 +2,9 @@
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
  *
- *  This program is free software. 
- *	You may use this code for anything you wish.
- *	It comes with no warranty.
+ *  This program is free software.
+ * You may use this code for anything you wish.
+ * It comes with no warranty.
  ***************************************************************************/
 
 /******************************************************************************/
@@ -22,24 +22,25 @@
 #include "exp_labels.h"
 
 #include "exp_funccall.h"
-#include "exp_ifloop.h"  
+#include "exp_ifloop.h"
 #include "exp_switch.h"
 
 #include "exp_asm.h"
 /******************************************************************************/
-#define CF_GETNEXTWORD		0x0001
-#define CF_INOBJECT			0x0002
-#define CF_INFUNCTION		0x0004
-#define CF_BRACEOK			0x0008
-#define CF_BRACED			0x0010
-#define CF_MACRO			0x0020
+#define CF_GETNEXTWORD  0x0001
+#define CF_INOBJECT   0x0002
+#define CF_INFUNCTION  0x0004
+#define CF_BRACEOK   0x0008
+#define CF_BRACED   0x0010
+#define CF_MACRO   0x0020
 
-#define CF_VARCHILD			0x8000
+#define CF_VARCHILD   0x8000
 /******************************************************************************/
 typedef BOOL  (*COMPPROC)(U16 flags, S16 *brackCnt);
 /******************************************************************************/
-enum _ARITHOPS {
-	ARITHOPS_ADD,
+enum _ARITHOPS
+{
+    ARITHOPS_ADD,
     ARITHOPS_SUB,
     ARITHOPS_MUL,
     ARITHOPS_DIV,
@@ -48,13 +49,13 @@ enum _ARITHOPS {
     ARITHOPS_SHL,
     ARITHOPS_XOR,
     ARITHOPS_AND,
-    ARITHOPS_OR, 
-	ARITHOPS_EQ,
-	ARITHOPS_NE,
-	ARITHOPS_GTE,
-	ARITHOPS_LTE,
-	ARITHOPS_GT,
-	ARITHOPS_LT,
+    ARITHOPS_OR,
+    ARITHOPS_EQ,
+    ARITHOPS_NE,
+    ARITHOPS_GTE,
+    ARITHOPS_LTE,
+    ARITHOPS_GT,
+    ARITHOPS_LT,
 };
 BOOL  CompileImmediateInteger(S16 brackCnt, S32 *outnum, S32 set, S32 inval);
 /******************************************************************************/

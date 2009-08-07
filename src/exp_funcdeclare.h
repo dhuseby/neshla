@@ -2,9 +2,9 @@
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
  *
- *  This program is free software. 
- *	You may use this code for anything you wish.
- *	It comes with no warranty.
+ *  This program is free software.
+ * You may use this code for anything you wish.
+ * It comes with no warranty.
  ***************************************************************************/
 
 /******************************************************************************/
@@ -13,7 +13,7 @@
 /******************************************************************************/
 #include "getcode.h"
 /******************************************************************************/
-#define MAX_MACRO_SIZE	8192
+#define MAX_MACRO_SIZE 8192
 /******************************************************************************/
 
 BOOL  comProc_FuncDeclare(U16 flags, S16 *brackCnt);

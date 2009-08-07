@@ -2,53 +2,57 @@
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
  *
- *  This program is free software. 
- *	You may use this code for anything you wish.
- *	It comes with no warranty.
+ *  This program is free software.
+ * You may use this code for anything you wish.
+ * It comes with no warranty.
  ***************************************************************************/
 
 /******************************************************************************/
 #ifndef scrbaseH
-#define scrbaseH            
+#define scrbaseH
 /******************************************************************************/
 #include "prepbase.h"
 #include "functions.h"
 #include "banks.h"
 /******************************************************************************/
 
-#define SCRFLAG_CLONE	0x8000
-#define SCRFLAG_LOCKED	0x0001
-#define SCRFLAG_MACRO	0x0002
+#define SCRFLAG_CLONE 0x8000
+#define SCRFLAG_LOCKED 0x0001
+#define SCRFLAG_MACRO 0x0002
 
-typedef struct _IFDEF {
-	struct _IFDEF *prev;
+typedef struct _IFDEF
+{
+    struct _IFDEF *prev;
     BOOL RESULT,ELSE;
 } IFDEF;
 
-typedef struct _INSCRIPT {
-	struct _INSCRIPT *parent;
-	struct _INSCRIPT *child;
+typedef struct _INSCRIPT
+{
+    struct _INSCRIPT *parent;
+    struct _INSCRIPT *child;
 
-	char *path;
-	char *filename;
+    char *path;
+    char *filename;
 
-	char *buffer;
-	char *inPtr,*prevPtr;
-	S32 inLen;
+    char *buffer;
+    char *inPtr,*prevPtr;
+    S32 inLen;
 
-	S32 line;
+    S32 line;
 
     U16 flags;
     IFDEF *ifdefTrack;
 
-    struct {
-     	BANK *bank;
+    struct
+    {
+        BANK *bank;
         U8 *ptr;
     } location;
 } INSCRIPT;
 
-typedef struct _SCRIPTSTATE {
-	INSCRIPT *firstScript,*curScript;
+typedef struct _SCRIPTSTATE
+{
+    INSCRIPT *firstScript,*curScript;
     //char *szTemp;
 } SCRIPTSTATE;
 /******************************************************************************/

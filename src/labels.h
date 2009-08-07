@@ -2,9 +2,9 @@
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
  *
- *  This program is free software. 
- *	You may use this code for anything you wish.
- *	It comes with no warranty.
+ *  This program is free software.
+ * You may use this code for anything you wish.
+ * It comes with no warranty.
  ***************************************************************************/
 
 /******************************************************************************/
@@ -14,13 +14,14 @@
 
 #include "vars.h"
 
-#define LABELFLAG_MACKER	0x0001
+#define LABELFLAG_MACKER 0x0001
 
-typedef struct _LABEL {
-	struct _LABEL *prev;
-	S32 	offset;
-    char	*label;
-    U16		flags;
+typedef struct _LABEL
+{
+    struct _LABEL *prev;
+    S32  offset;
+    char *label;
+    U16  flags;
 } LABEL;
 
 /******************************************************************************/

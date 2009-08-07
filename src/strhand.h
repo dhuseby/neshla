@@ -2,9 +2,9 @@
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
  *
- *  This program is free software. 
- *	You may use this code for anything you wish.
- *	It comes with no warranty.
+ *  This program is free software.
+ * You may use this code for anything you wish.
+ * It comes with no warranty.
  ***************************************************************************/
 
 /******************************************************************************/
@@ -30,26 +30,27 @@ extern char *szAccOps[];
 extern U8 opAccs[6][2];
 extern int invlabel;
 
-enum _ACCOP {
-  	ACCOP_NOT,
-  	ACCOP_BNOT,
-  	ACCOP_LO,
-  	ACCOP_HI,
-  	ACCOP_NYLO,
-  	ACCOP_NYHI,
-  	ACCOP_SIZEOF,
-  	ACCOP_PLUS,
-  	ACCOP_MINUS,  
-  	ACCOP_BANKOF,
+enum _ACCOP
+{
+    ACCOP_NOT,
+    ACCOP_BNOT,
+    ACCOP_LO,
+    ACCOP_HI,
+    ACCOP_NYLO,
+    ACCOP_NYHI,
+    ACCOP_SIZEOF,
+    ACCOP_PLUS,
+    ACCOP_MINUS,
+    ACCOP_BANKOF,
 
-  	ACCOP_TOTAL
+    ACCOP_TOTAL
 };
 extern char *szObjHdrProps[];
 extern char *szAdditionalKeywords[];
 extern BOOL NEWLINE;
 /******************************************************************************/
-#define ISNUM(c)	(((c)>='0')&&((c)<='9'))
-#define ISHEX(c)	( (((c)>='A')&&((c)<='F')) || (((c)>='a')&&((c)<='f')) )
+#define ISNUM(c) (((c)>='0')&&((c)<='9'))
+#define ISHEX(c) ( (((c)>='A')&&((c)<='F')) || (((c)>='a')&&((c)<='f')) )
 
 /******************************************************************************/
 char  GetNextChar(void);
@@ -88,8 +89,9 @@ BOOL  IsCharLabel(char c);
 S32  ConfirmChar(S32 num);
 S32  ConfirmWord(S32 num);
 
-typedef struct {
-	char *string;
+typedef struct
+{
+    char *string;
     int index;
 } STRINT;
 

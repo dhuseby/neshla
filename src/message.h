@@ -2,9 +2,9 @@
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
  *
- *  This program is free software. 
- *	You may use this code for anything you wish.
- *	It comes with no warranty.
+ *  This program is free software.
+ * You may use this code for anything you wish.
+ * It comes with no warranty.
  ***************************************************************************/
 
 /******************************************************************************/
@@ -32,22 +32,23 @@ void logexit(void);
 #define QSTR "\"%s\""
 #define QCHAR "'%c'"
 /******************************************************************************/
-enum _ERRORS {
-	ERR_USERPREP,
-	ERR_INVALIDCODE,
+enum _ERRORS
+{
+    ERR_USERPREP,
+    ERR_INVALIDCODE,
     ERR_MISPLACEDCODE,
-	ERR_BRACENOTALLOWED,
+    ERR_BRACENOTALLOWED,
     ERR_BRACECLOSENOTALLOWED,
     ERR_TOOFEWBRACKETS,
     ERR_CLOSEBRACKEXP,
     ERR_CLOSEBRACEEXP,
     ERR_INVCHARCODE,
     ERR_CHARENDEXP,
-	ERR_SCRIPTNUMNOTSPEC,
-	ERR_SCRIPTDEFINED,
-	ERR_RESNUMOUTOFRANGE,
-	ERR_INTEXP,
-	ERR_PREPROCESSORID,
+    ERR_SCRIPTNUMNOTSPEC,
+    ERR_SCRIPTDEFINED,
+    ERR_RESNUMOUTOFRANGE,
+    ERR_INTEXP,
+    ERR_PREPROCESSORID,
     ERR_ILLEGALINT,
     ERR_ILLEGALCHARACTER,
     ERR_UNTERM_STRING,
@@ -91,14 +92,14 @@ enum _ERRORS {
     ERR_ASSIGNMENT,
     ERR_INVCOND,
     ERR_IFCONDCLOSEEXP,
-	ERR_IFENCLOSEEXP,
+    ERR_IFENCLOSEEXP,
     ERR_WHILEEXP,
     ERR_FUNCVOIDRET,
     ERR_CASECOLEXP,
-	ERR_PROPORMETHFORSEND,
-	ERR_SENDTOOLARGE,
-	ERR_SWITCHINBRACE,
-	ERR_SWITCHOUTBRACE,
+    ERR_PROPORMETHFORSEND,
+    ERR_SENDTOOLARGE,
+    ERR_SWITCHINBRACE,
+    ERR_SWITCHOUTBRACE,
     ERR_FUNCINBRACK,
     ERR_FUNCENDSOON,
     ERR_PARAMCOMMA,
@@ -111,24 +112,24 @@ enum _ERRORS {
     ERR_READONLYPROP,
     ERR_INVSEND,
     ERR_NOSENDOBJ,
-	ERR_KERNELFUNCPUBLIC,
+    ERR_KERNELFUNCPUBLIC,
     ERR_VARPUBLIC,
     ERR_MAXDISPATCH,
-	ERR_OBJFILEOVERFLOW,
+    ERR_OBJFILEOVERFLOW,
     ERR_SAVINGUNIT,
     ERR_LOADINGUNIT,
     ERR_INVALIDUNIT,
     ERR_INVALIDUNITVER,
     ERR_TOOMANYPARAMS,
-	ERR_ILLEGALBIN,
+    ERR_ILLEGALBIN,
     ERR_UNIMPLEMENTED,
     ERR_INVALIDALIGN,
     ERR_VARNOBANK,
     ERR_LABELNOBANK,
-    ERR_PREPROCESSSUB,  
+    ERR_PREPROCESSSUB,
     ERR_UNKMAPPER,
     ERR_UNKMIRRORING,
-   	ERR_CODEINRAM,
+    ERR_CODEINRAM,
 
     ERR_FUNCDECINBRACK,
     ERR_FUNCDECOUTBRACK,
@@ -139,8 +140,8 @@ enum _ERRORS {
 
     ERR_NEWLINEEXPECTED,
 
-	ERR_PARAMNOTIMMIDIATE,
-	ERR_PARAMNOTINDIRECT,
+    ERR_PARAMNOTIMMIDIATE,
+    ERR_PARAMNOTINDIRECT,
     ERR_PARAMNOINDEXED,
     ERR_PARAMINVALIDINDEX,
     ERR_OPBRACECLOSEUNEXP,
@@ -199,7 +200,7 @@ enum _ERRORS {
 
     ERR_SELFNESTEDDEF,
     ERR_SELFNESTEDSOURCE,
-    
+
     ERR_ADDINGPATH,
 
     ERR_VARNOTARRAY,
@@ -238,31 +239,33 @@ enum _ERRORS {
     ERR_OPZPINDEXONLY,
 };
 /******************************************************************************/
-enum _FATALS {     
-	FTL_USERPREP,
-	FTL_OUTOFMEMORY,
-	FTL_COMPFAIL,
+enum _FATALS
+{
+    FTL_USERPREP,
+    FTL_OUTOFMEMORY,
+    FTL_COMPFAIL,
     FTL_OUTPUTSCRIPTOVERFLO,
     FTL_SAVINGRESOURCE,
-	FTL_OPENFILE_IN,
-	FTL_OPENFILE_OUT,
+    FTL_OPENFILE_IN,
+    FTL_OPENFILE_OUT,
     FTL_TOOMANYBRACKETS,
     FTL_LABELMEMORY,
-	FTL_CODENOTTERMINATED,   
+    FTL_CODENOTTERMINATED,
     FTL_NOACTIVEBANK,
     FTL_MAXBANKCOUNT,
-    FTL_BANKOVERFLO, 
+    FTL_BANKOVERFLO,
     FTL_CURBANKINTERRUPTOVER,
     FTL_NOTROMBANK,
     FTL_NOTCHRBANK,
-    FTL_VARNOTROMBANK, 
+    FTL_VARNOTROMBANK,
     FTL_TOOMANYBRACES,
     FTL_OPENINGFILEWRITE,
-	FTL_FUNCTIONERR,
+    FTL_FUNCTIONERR,
 };
 /******************************************************************************/
-enum _WARNINGS {
-	WRN_USERPREP,
+enum _WARNINGS
+{
+    WRN_USERPREP,
     WRN_CHARCONV,
     WRN_WORDCONV,
     WRN_CODEINCHR,
@@ -275,12 +278,13 @@ enum _WARNINGS {
 
     WRN_VARINTFUNC,
     WRN_CODEINRAM,
-};         
+};
 /******************************************************************************/
-enum _NOTICE {
-	MSG_NONE,
-	MSG_DEBUG,
-	MSG_COMPSUCCESS,
+enum _NOTICE
+{
+    MSG_NONE,
+    MSG_DEBUG,
+    MSG_COMPSUCCESS,
 
 };
 /******************************************************************************/

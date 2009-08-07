@@ -2,50 +2,50 @@
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
  *
- *  This program is free software. 
- *	You may use this code for anything you wish.
- *	It comes with no warranty.
+ *  This program is free software.
+ * You may use this code for anything you wish.
+ * It comes with no warranty.
  ***************************************************************************/
 
 #ifndef configH
 #define configH
 
-typedef struct config_s 
+typedef struct config_s
 {
-	struct 
+    struct
     {
-		struct 
+        struct
         {
-        	int		max;
-            int		level;
+            int  max;
+            int  level;
         } warning;
 
-		struct 
+        struct
         {
-        	int		max;
+            int  max;
         } error;
 
-		struct 
+        struct
         {
-        	BOOL	enabled;
-        	int		max;
+            BOOL enabled;
+            int  max;
         } todo;
 
-		struct 
+        struct
         {
-        	BOOL	enabled;
-        	int		max;
+            BOOL enabled;
+            int  max;
         } tell;
 
     } msg;
 
     //struct {
-    	//BOOL stripUnused;
+    //BOOL stripUnused;
     //} func;
 
-    struct 
+    struct
     {
-    	BOOL	vars;
+        BOOL vars;
         BOOL    functions;
         BOOL    banklist;
         BOOL    sourcesize;
@@ -53,9 +53,9 @@ typedef struct config_s
 
     struct
     {
-    	BOOL	rawPrgChr;
-        BOOL	padUp;
-        BOOL	enableHeader;
+        BOOL rawPrgChr;
+        BOOL padUp;
+        BOOL enableHeader;
     } output;
 } config_t;
 typedef config_t CONFIG;

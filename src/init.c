@@ -2,9 +2,9 @@
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
  *
- *  This program is free software. 
- *	You may use this code for anything you wish.
- *	It comes with no warranty.
+ *  This program is free software.
+ * You may use this code for anything you wish.
+ * It comes with no warranty.
  ***************************************************************************/
 
 /******************************************************************************/
@@ -16,39 +16,39 @@
 
 /******************************************************************************/
 BOOL InitializeCompiler()
-{                    
-	InitMessages();
+{
+    InitMessages();
 
-	COMPILE_SUCCESS	= TRUE;
+    COMPILE_SUCCESS = TRUE;
 
-	errorCnt		=
-    warnCnt			=
-    todoCnt			= 0;
+    errorCnt  =
+        warnCnt   =
+            todoCnt   = 0;
 
 
-	scriptNumber	= -1;	// no script specified yet
+    scriptNumber = -1; // no script specified yet
 
-	firstScript 	=
-	curScript		= NULL;
+    firstScript  =
+        curScript  = NULL;
 
-	defList			=
-    defListPtr		= NULL;
-    USE_DEFS		= TRUE;
+    defList   =
+        defListPtr  = NULL;
+    USE_DEFS  = TRUE;
 
-    fixOffs			= NULL;
-                            
-    curVar 			=
-    vars			=
-    typedefs		= NULL;
+    fixOffs   = NULL;
 
-    functions		=
-    curFunction 	=
-    curMacro		=
-    macker			= NULL;
+    curVar    =
+        vars   =
+            typedefs  = NULL;
 
-    labels			= NULL;
+    functions  =
+        curFunction  =
+            curMacro  =
+                macker   = NULL;
 
-    enumClasses		= NULL;
+    labels   = NULL;
+
+    enumClasses  = NULL;
 
 
 
@@ -62,7 +62,7 @@ void ShutDownCompiler()
 {
     FreeFixoffs(&fixOffs);
 
-	DiscardScript(firstScript);
+    DiscardScript(firstScript);
 
     FreeLists(&defList);
 
@@ -72,14 +72,14 @@ void ShutDownCompiler()
 
     ssFree(labelStrings.buffer);
 
-	ReleaseCurVar();
-	ReleaseCurFunc();
+    ReleaseCurVar();
+    ReleaseCurFunc();
 
     FreeVars(&vars);
     FreeVars(&typedefs);
 
     FreeFunctions(&functions);
-    while(ReleaseCurMacro());
+    while (ReleaseCurMacro());
     FreeLabels(&labels);
 
     FreeBanks();
