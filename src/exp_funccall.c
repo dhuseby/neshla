@@ -1,23 +1,21 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
-/******************************************************************************
+
+/***************************************************************************
  * Handles the rest of the valid expressions
- ******************************************************************************/
-#pragma package(smart_init)
-/******************************************************************************/
+ ***************************************************************************/
 
 char szParam[1024];
-char *FASTCALL GetParamBlock()
+char * GetParamBlock()
 {
     int bracks=0;
 	szParam[0]='\0';
@@ -65,9 +63,9 @@ char *FASTCALL GetParamBlock()
 
     return szParam;
 }
-/******************************************************************************/
 
-void FASTCALL SeekThroughParamBlock()
+
+void SeekThroughParamBlock()
 {
     int bracks=0;
 
@@ -104,8 +102,9 @@ void FASTCALL SeekThroughParamBlock()
         }
     }
 }
-/******************************************************************************/
-BOOL FASTCALL comProc_FunctionCall(U16 flags, S16 *brackCnt)
+
+
+BOOL comProc_FunctionCall(U16 flags, S16 *brackCnt)
 {
 	FUNC *func,*f_macro;
     int pnum;
@@ -192,5 +191,4 @@ BOOL FASTCALL comProc_FunctionCall(U16 flags, S16 *brackCnt)
 
     return TRUE;
 }
-/******************************************************************************/
 

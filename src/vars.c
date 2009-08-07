@@ -1,23 +1,22 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
 #include "functions.h"
+
 /******************************************************************************
  * Handles variables
  ******************************************************************************/
-#pragma package(smart_init)
-/******************************************************************************/
+
 VAR *vars,*curVar,*typedefs;
-/******************************************************************************/
+
 VARCAST varcasts[] = {
 	{"",
     	VARCAST_NULL, 	VARSIZE_NULL},
@@ -34,7 +33,8 @@ VARCAST varcasts[] = {
 	{"struct",
     	VARCAST_STRUCT,	VARSIZE_NULL},
 };
-/******************************************************************************/
+
+
 void FreeVars(VAR **pvar)
 {
 	VAR *var=*pvar,*next;
@@ -49,7 +49,8 @@ void FreeVars(VAR **pvar)
 		*pvar = NULL;
 	}
 }
-/******************************************************************************/
+
+
 VAR *AddVariable(char *label, U16 cast, VAR *castvar, U16 flags, S32 offset)
 {
 	VAR *newvar;
@@ -134,7 +135,8 @@ VAR *AddVariable(char *label, U16 cast, VAR *castvar, U16 flags, S32 offset)
 
     return newvar;
 }
-/******************************************************************************/
+
+
 void SetVarOffsets(VAR *var, S32 offset, BOOL SCAN)
 {              /*
 	if(!SCAN && var)
@@ -156,7 +158,8 @@ void SetVarOffsets(VAR *var, S32 offset, BOOL SCAN)
         var = var->next;
     }
 }
-/******************************************************************************/
+
+
 VAR *CloneVar(VAR *var, VAR *parent,U16 flags)
 {
 	VAR *prev=NULL,*start=NULL,*next;
@@ -182,12 +185,14 @@ VAR *CloneVar(VAR *var, VAR *parent,U16 flags)
     }
     return start;
 }
-/******************************************************************************/
+
+
 void SetCurVar(VAR* var)
 {
 	curVar = var;
 }
-/******************************************************************************/
+
+
 BOOL CheckoutCurVar()
 {
 	if(curVar) {
@@ -196,14 +201,15 @@ BOOL CheckoutCurVar()
     }
     return FALSE;
 }
-/******************************************************************************/
+
+
 VAR* ReleaseCurVar()
 {
 	if(curVar)
     	curVar = curVar->parent;
     return curVar;
 }
-/******************************************************************************/
+
 
 VAR* FindVariable(VAR *var, char *label)
 {
@@ -211,7 +217,7 @@ VAR* FindVariable(VAR *var, char *label)
         var = var->prev;
     return var;
 }
-/******************************************************************************/
+
 
 VAR *FindFirstVariable(VAR *var)
 {
@@ -219,7 +225,7 @@ VAR *FindFirstVariable(VAR *var)
         var = var->prev;
     return var;
 }
-/******************************************************************************/
+
 
 int IsVarCast(char *label,VAR **castvar)
 {
@@ -237,13 +243,14 @@ int IsVarCast(char *label,VAR **castvar)
 
     return 0;
 }
-/******************************************************************************/
+
+
 S32 VarSize(VAR *var)
 {
 	return ( var->arraySize? var->arraySize*var->size : var->size );
 }
 
-/******************************************************************************/
+
 S32 PonderArray(VAR *var)
 {
     S32 offset=0,num;
@@ -267,7 +274,8 @@ S32 PonderArray(VAR *var)
         }
     return offset;
 }
-/******************************************************************************/
+
+
 VAR *PonderVariable(VAR *var, S32 *_offset)
 {
     VAR *newvar;
@@ -316,7 +324,6 @@ VAR *PonderVariable(VAR *var, S32 *_offset)
     return var;
 }
 
-/******************************************************************************/
 
 void CheckVariableCalls()
 {
@@ -332,5 +339,4 @@ void CheckVariableCalls()
         var = var->prev;
     }
 }
-/******************************************************************************/
 

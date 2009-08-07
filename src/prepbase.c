@@ -1,24 +1,20 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
-/******************************************************************************/
-#pragma package(smart_init)
-/******************************************************************************/
+
 PLIST *defList,*defListPtr;
 ENUMCLASS *enumClasses;
 BOOL USE_DEFS;
-/******************************************************************************/
 
-BOOL FASTCALL AddDefine(char *label, char *definition)
+BOOL AddDefine(char *label, char *definition)
 {
 	DEFINE *def,*lastDef;
     char *szS,*szE,*s;
@@ -72,8 +68,9 @@ BOOL FASTCALL AddDefine(char *label, char *definition)
     }
     return TRUE;
 }
-/******************************************************************************/
-ENUMCLASS *FASTCALL FindEnumClass(char *label)
+
+
+ENUMCLASS * FindEnumClass(char *label)
 {
 	ENUMCLASS *enumClass=enumClasses;
     while(enumClass) {
@@ -83,8 +80,9 @@ ENUMCLASS *FASTCALL FindEnumClass(char *label)
     }
     return enumClass;
 }
-/******************************************************************************/
-void FASTCALL FreeEnumClasses()
+
+
+void FreeEnumClasses()
 {
 	ENUMCLASS *enumClass=enumClasses,*next;
     while(enumClass) {
@@ -98,8 +96,9 @@ void FASTCALL FreeEnumClasses()
         enumClass = next;
     }
 }
-/******************************************************************************/
-BOOL FASTCALL AddEnum(char *szenumclass, char *label, int index)
+
+
+BOOL AddEnum(char *szenumclass, char *label, int index)
 {
 	DEFINE *def;
     ENUMCLASS *enumClass;
@@ -130,8 +129,9 @@ BOOL FASTCALL AddEnum(char *szenumclass, char *label, int index)
 
     return TRUE;
 }
-/******************************************************************************/
-BOOL FASTCALL DelDefine(char *label)
+
+
+BOOL DelDefine(char *label)
 {
     DEFINE *def = FindDefine(defList,label);   
 //    if(!STRCMP(label,"_STD_MEMORY_H"))
@@ -142,8 +142,9 @@ BOOL FASTCALL DelDefine(char *label)
     }
 	return FALSE;
 }
-/******************************************************************************/
-DEFINE *FASTCALL FindDefine(PLIST *list, char *label)
+
+
+DEFINE * FindDefine(PLIST *list, char *label)
 {
     register DEFINE *def;
     register int i;
@@ -160,15 +161,17 @@ DEFINE *FASTCALL FindDefine(PLIST *list, char *label)
     }
     return NULL;
 }
-/******************************************************************************/
-BOOL FASTCALL HandleMacros(char *label)
+
+
+BOOL HandleMacros(char *label)
 {
     if(USE_DEFS) {
     	DEFINE *def;
     	FUNC *func;
     	PARAM *param;
 
-        if(!(BOOL)(def = FindDefine(defList,label))) {
+        def = FindDefine(defList, label);
+        if(!def) {
     		ENUMCLASS *enm = FindEnumClass(label);
             if(enm) {
             	if(GetNextChar()!='.') {
@@ -208,5 +211,4 @@ BOOL FASTCALL HandleMacros(char *label)
     }
     return FALSE; // none found, but ok
 }         
-/******************************************************************************/
 

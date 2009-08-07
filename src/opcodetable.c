@@ -1,6 +1,7 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
@@ -11,7 +12,7 @@
  * The opcode matrixes!
  *****************************************************************************/
 #include "compiler.h"
-/*****************************************************************************/
+
 OPARGS opArgs[prtTOTAL] = {
 	{ priNONE,	prmNONE, "",					0,  0,	argNONE,		argNONE	},
 	{ priIMD,	prmIMD,  "immediate",			1,  1,	argIMD,			argNONE	},
@@ -27,7 +28,7 @@ OPARGS opArgs[prtTOTAL] = {
 	{ priNDY,	prmNDY,  "[zp address], y",		1,  2,	argZPADDR,		argY	},
 	{ priA,		prmA,  	"A",					0,  1,	argA,			argNONE	},
 };
-/*****************************************************************************/
+
 OPCODE opcodes[opTOTAL_UNIQUE] = {
 	{ "BRK", prmIMD,
 		{0xFF,opBRK_IMD,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}},
@@ -144,4 +145,4 @@ OPCODE opcodes[opTOTAL_UNIQUE] = {
 	{ "NOP", prmNONE,
 		{opNOP,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}},
 };
-/*****************************************************************************/
+

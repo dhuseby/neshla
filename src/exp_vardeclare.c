@@ -1,25 +1,23 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
+
 /******************************************************************************
  * Handles variable declarations
  ******************************************************************************/
-#pragma package(smart_init)
-/******************************************************************************/
 
-/******************************************************************************/
-int FASTCALL CompileVarBody(U16 flags, S16 *brackCnt, VAR *var, int *_elementsSize, int braceCnt, int cast);
-/******************************************************************************/
-BOOL FASTCALL comProc_VarDeclare(U16 flags, S16 *brackCnt)
+int CompileVarBody(U16 flags, S16 *brackCnt, VAR *var, int *_elementsSize, int braceCnt, int cast);
+
+
+BOOL comProc_VarDeclare(U16 flags, S16 *brackCnt)
 {
 	int cast,arraySize,elementsSize,braceCnt;
     S32 offset=-1,elementsEnd;
@@ -209,8 +207,9 @@ BOOL FASTCALL comProc_VarDeclare(U16 flags, S16 *brackCnt)
 
     return TRUE;
 }
-/******************************************************************************/
-int FASTCALL CompileVarBody(U16 flags, S16 *brackCnt, VAR *var, int *_elementsSize, int braceCnt, int cast)
+
+
+int CompileVarBody(U16 flags, S16 *brackCnt, VAR *var, int *_elementsSize, int braceCnt, int cast)
 {
 	int elementsSize, len;
     S32 num;
@@ -342,5 +341,4 @@ int FASTCALL CompileVarBody(U16 flags, S16 *brackCnt, VAR *var, int *_elementsSi
 	
 	return braceCnt;
 }
-/******************************************************************************/
 

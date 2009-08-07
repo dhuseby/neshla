@@ -1,15 +1,15 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/*********************************************************************/
 #include "compiler.h"
-/*********************************************************************/
+
 char szPadding[65],*szPadPtr;
 int bankCounts[BANKTYPE_TOTAL];
 BANK *banks,*bankPtr,*curBank,ramBank;
@@ -20,19 +20,22 @@ S32 bankDefaultSizes[BANKTYPE_TOTAL] = {
 	0x1000,	//BANKTYPE_CHR
 };
 S32 bankSizes[BANKTYPE_TOTAL];
+
 S32 validAligns[] = {
     0x0001,0x0002,0x0004,0x0008,
     0x0010,0x0020,0x0040,0x0080,
     0x0100,0x0200,0x0400,0x0800,
     0x1000,0x2000,0x4000,0x8000, 0
 };
+
 char *szBankTypes[] = {
 	"RAM",
 	"PRG ROM",
 	"CHR ROM",
 };
-/*********************************************************************/
-BOOL 	FASTCALL InitBanks()
+
+
+BOOL InitBanks()
 {
 	strcpy(szPadding, "\xFF");
     szPadPtr		= szPadding;
@@ -57,8 +60,9 @@ BOOL 	FASTCALL InitBanks()
 
 	return TRUE;
 }
-/*********************************************************************/
-void 	FASTCALL FreeBanks()
+
+
+void FreeBanks()
 {
 	BANK *next;
 	while(banks) {
@@ -69,8 +73,9 @@ void 	FASTCALL FreeBanks()
         banks = next;
     }
 }
-/*********************************************************************/
-BANK *	FASTCALL FindBank(char *label)
+
+
+BANK * FindBank(char *label)
 {
 	BANK *bank=banks;
 	while(bank) {
@@ -80,8 +85,9 @@ BANK *	FASTCALL FindBank(char *label)
     }
     return bank;
 }
-/*********************************************************************/
-U32 	FASTCALL CountBanksize(int type)
+
+
+U32 CountBanksize(int type)
 {
 	U32 size=0;
 	BANK *bank=banks;
@@ -93,8 +99,9 @@ U32 	FASTCALL CountBanksize(int type)
     }
     return size;
 }
-/*********************************************************************/
-U32 	FASTCALL GetBankIndex(BANK *bank, int banksize)
+
+
+U32 GetBankIndex(BANK *bank, int banksize)
 {
 	U32 size=0;
 	BANK *bseek=banks;
@@ -112,8 +119,9 @@ U32 	FASTCALL GetBankIndex(BANK *bank, int banksize)
     }
     return size/banksize;
 }
-/*********************************************************************/
-void 	FASTCALL FWriteBanks(int type, FILE *f)
+
+
+void FWriteBanks(int type, FILE *f)
 {
 	BANK *bank=banks;
 	while(bank) {
@@ -123,8 +131,9 @@ void 	FASTCALL FWriteBanks(int type, FILE *f)
         bank = bank->next;
     }
 }
-/*********************************************************************/
-void 	FASTCALL SetBank(S16 type, char *label)
+
+
+void SetBank(S16 type, char *label)
 {
 	BANK *newbank;
     int i;
@@ -165,17 +174,17 @@ void 	FASTCALL SetBank(S16 type, char *label)
     	sprintf(newbank->label,"bank%04u",newbank->bank);
     }
 }      
-/*********************************************************************/
 
-/*********************************************************************/
-void 	FASTCALL LabelBank(char *label)
+
+void LabelBank(char *label)
 {              
 	CheckCurBank();
     ssFree(curBank->label);
     curBank->label = strdup(label);
 }
-/*********************************************************************/
-void 	FASTCALL AlignCode(int align)
+
+
+void AlignCode(int align)
 {
 	S32 offset;
     S32 *a;
@@ -196,7 +205,6 @@ void 	FASTCALL AlignCode(int align)
 }
 
 
-/******************************************************************************/
 void BankFatalOverflow(U32 size)
 {
 	if(curBank->buffer+curBank->maxsize != curBank->end)
@@ -204,8 +212,9 @@ void BankFatalOverflow(U32 size)
     else
     	fatal(FTL_BANKOVERFLO,curBank->label,size,curBank->maxsize);
 }
-/*********************************************************************/
-void 	FASTCALL BankWrite(U8 *data, S32 size)
+
+
+void BankWrite(U8 *data, S32 size)
 {
 	CheckCurBank();
 	if((S32)curBank->ptr+size > (S32)curBank->end)
@@ -213,8 +222,9 @@ void 	FASTCALL BankWrite(U8 *data, S32 size)
     memcpy(curBank->ptr,data,size);
     curBank->ptr += size;
 }
-/*********************************************************************/
-void 	FASTCALL BankFill(U8 c, S32 size)
+
+
+void BankFill(U8 c, S32 size)
 {
 	CheckCurBank();
 	if((S32)curBank->ptr+size > (S32)curBank->end)
@@ -222,54 +232,61 @@ void 	FASTCALL BankFill(U8 c, S32 size)
     memset(curBank->ptr,c,size);
     curBank->ptr += size;
 }
-/*********************************************************************/
-void 	FASTCALL BankSeekFwd(S32 size)
+
+
+void BankSeekFwd(S32 size)
 {
 	CheckCurBank();
 	if((S32)curBank->ptr+size > (S32)curBank->end)
     	BankFatalOverflow(BANK_OFFSET(curBank)+size);
     curBank->ptr += size;
 }
-/*********************************************************************/
-void 	FASTCALL BankSeek(S32 dest)
+
+
+void BankSeek(S32 dest)
 {
 	CheckCurBank();
 	if((S32)dest > (S32)curBank->end)
     	BankFatalOverflow(BANK_OFFSET(curBank)+dest);
     curBank->ptr = curBank->buffer+dest;
 }
-/*********************************************************************/
-void 	FASTCALL BankSeekIntVect(S32 dest)
+
+
+void BankSeekIntVect(S32 dest)
 {
 	CheckCurBank();
 	if((S32)dest > (S32)(curBank->buffer+curBank->maxsize))
     	BankFatalOverflow(BANK_OFFSET(curBank)+dest);
     curBank->ptr = curBank->buffer+dest;
 }
-/*********************************************************************/
-S32 	FASTCALL GetBankOffset()
+
+
+S32 GetBankOffset()
 {
 	CheckCurBank();
 	return (S32)(BANK_OFFSET(curBank)+curBank->org);
 }
-/*********************************************************************/
-S32 	FASTCALL GetBankSpace()
+
+
+S32 GetBankSpace()
 {
 	CheckCurBank();
     if(curBank->type==BANKTYPE_CHR)
         	curBank = curBank;
 	return (curBank->maxsize-BANK_OFFSET(curBank));
 }
-/*********************************************************************/
-void 	FASTCALL BankPutB(S8 code) {
+
+
+void BankPutB(S8 code) {
 	if(curBank->ptr+sizeof(S8) > curBank->end)
     	BankFatalOverflow(BANK_OFFSET(curBank)+sizeof(S8));
 	if(curBank->buffer)
     	*curBank->ptr = code;
     curBank->ptr++;
 }
-/******************************************************************************/
-void 	FASTCALL BankPutW(S16 code) {
+
+
+void BankPutW(S16 code) {
 	if(curBank->ptr+sizeof(S16) > curBank->end)
     	BankFatalOverflow(BANK_OFFSET(curBank)+sizeof(S16));
 	if(curBank->buffer)
@@ -277,8 +294,9 @@ void 	FASTCALL BankPutW(S16 code) {
     else
     	curBank->ptr+=2;
 }
-/******************************************************************************/
-void 	FASTCALL BankWriteIntVect(S16 code)
+
+
+void BankWriteIntVect(S16 code)
 {
 	if(curBank->ptr+sizeof(S16) > (curBank->buffer+curBank->maxsize))
     	BankFatalOverflow(BANK_OFFSET(curBank)+sizeof(S16));
@@ -287,8 +305,9 @@ void 	FASTCALL BankWriteIntVect(S16 code)
     else
     	curBank->ptr+=2;
 }
-/******************************************************************************/
-void 	FASTCALL BankPutL(S32 code) {
+
+
+void BankPutL(S32 code) {
 	if(curBank->ptr+sizeof(S32) > curBank->end)
     	BankFatalOverflow(BANK_OFFSET(curBank)+sizeof(S32));
 	if(curBank->buffer)
@@ -296,8 +315,9 @@ void 	FASTCALL BankPutL(S32 code) {
     else
     	curBank->ptr+=4;
 }
-/*********************************************************************/
-BOOL 	FASTCALL IncBin(char *filename, S32 maxsize)
+
+
+BOOL IncBin(char *filename, S32 maxsize)
 {
 	U8 *buffer;
     S32 len,bankspace;
@@ -333,14 +353,16 @@ BOOL 	FASTCALL IncBin(char *filename, S32 maxsize)
 
  	return TRUE;
 }    
-/*********************************************************************/
-char FASTCALL GetPadChar(void)
+
+
+char GetPadChar(void)
 {
 	if(*szPadPtr)
     	return *szPadPtr++;
     return *(szPadPtr = szPadding);
 }                           
-/*********************************************************************/
+
+
 long GetBankBinOffset(BANK *bankof)
 {
 	long offset = 0;
@@ -357,7 +379,8 @@ long GetBankBinOffset(BANK *bankof)
 
     return offset;
 }
-/*********************************************************************/
+
+
 long GetBankBinLength(BANK *bankOfPtr, U8 *ptr, BANK *bankSpan)
 {
 	long length = 0;
@@ -379,5 +402,5 @@ long GetBankBinLength(BANK *bankOfPtr, U8 *ptr, BANK *bankSpan)
 
     return length;
 }
-/*********************************************************************/
+
 

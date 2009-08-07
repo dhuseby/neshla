@@ -1,22 +1,20 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
+
 /******************************************************************************
  * Handles the machine code assembly
  ******************************************************************************/
-#pragma package(smart_init)
 
-/******************************************************************************/
-BOOL FASTCALL comProcSub_OpParamNONE(U8 opcode, S16 *brackCnt)
+BOOL comProcSub_OpParamNONE(U8 opcode, S16 *brackCnt)
 {
 	// if a newline has been touched since the peeknextword, it's all good
     if(NEWLINE) {
@@ -25,8 +23,9 @@ BOOL FASTCALL comProcSub_OpParamNONE(U8 opcode, S16 *brackCnt)
     }
 	return FALSE;
 }
-/******************************************************************************/
-BOOL FASTCALL comProcSub_OpParamIMD(U8 opcode, S16 *brackCnt)
+
+
+BOOL comProcSub_OpParamIMD(U8 opcode, S16 *brackCnt)
 {
 	S32 num;
 
@@ -42,8 +41,9 @@ BOOL FASTCALL comProcSub_OpParamIMD(U8 opcode, S16 *brackCnt)
 
 	return TRUE;
 }
-/******************************************************************************/
-BOOL FASTCALL comProcSub_OpParamREL(U8 opcode, S16 *brackCnt)
+
+
+BOOL comProcSub_OpParamREL(U8 opcode, S16 *brackCnt)
 {
 	S16 i,type;
     S32 newoffset,offset;
@@ -104,8 +104,9 @@ BOOL FASTCALL comProcSub_OpParamREL(U8 opcode, S16 *brackCnt)
 
 	return TRUE;
 }
-/******************************************************************************/
-BOOL FASTCALL comProcSub_OpParamA(U8 opcode, S16 *brackCnt) {
+
+
+BOOL comProcSub_OpParamA(U8 opcode, S16 *brackCnt) {
 	if(!STRCMP(szTemp,"A")) {
         GetNextWord();  
     	WriteOpcode(opcode);
@@ -114,8 +115,8 @@ BOOL FASTCALL comProcSub_OpParamA(U8 opcode, S16 *brackCnt) {
 	return FALSE;
 }
 
-/******************************************************************************/
-BOOL FASTCALL comProc_Asm(U16 flags, S16 *brackCnt)
+
+BOOL comProc_Asm(U16 flags, S16 *brackCnt)
 {
 	int opid;
 
@@ -130,8 +131,9 @@ BOOL FASTCALL comProc_Asm(U16 flags, S16 *brackCnt)
 
     return TRUE;
 }
-/******************************************************************************/
-BOOL FASTCALL GetOperands(int opid)
+
+
+BOOL GetOperands(int opid)
 {
 	int oa, labelSize;
 	OPCODE *opcode;
@@ -339,5 +341,4 @@ BOOL FASTCALL GetOperands(int opid)
 
     return TRUE;
 }
-/******************************************************************************/
 

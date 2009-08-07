@@ -1,20 +1,18 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 Dave Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
+
 /******************************************************************************
  * Handles the if/while expressions
  ******************************************************************************/
-#pragma package(smart_init)
-/******************************************************************************/
 
 STRINT siConditions[] = {
   	{"plus",		opBPL_REL},
@@ -67,8 +65,9 @@ STRINT siIffys[] = {
   	{"do",		IFMODE_DOWHILE},
   	{"",		0},
 };
-/******************************************************************************/
-BOOL FASTCALL comProc_IfLoop(U16 flags, S16 *brackCnt)
+
+
+BOOL comProc_IfLoop(U16 flags, S16 *brackCnt)
 {
 	BOOL	BRACK=FALSE,FAR_BRANCH=FALSE,FLIPOP;
     S32		start,whilestart,offset;
@@ -213,5 +212,4 @@ BOOL FASTCALL comProc_IfLoop(U16 flags, S16 *brackCnt)
     	return FALSE;
     return TRUE;
 }
-/******************************************************************************/
 

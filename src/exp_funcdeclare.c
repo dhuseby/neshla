@@ -1,21 +1,20 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
+
 /******************************************************************************
  * Handles variable declarations
  ******************************************************************************/
-#pragma package(smart_init)
-/******************************************************************************/
-void FASTCALL ParseMacroBlock(FUNC *func)
+
+void ParseMacroBlock(FUNC *func)
 {
  	OUTBUF macroBlock;
     int braceCnt = 0,sl;
@@ -80,8 +79,9 @@ void FASTCALL ParseMacroBlock(FUNC *func)
 
     func->macDef = macroBlock.buffer;
 }
-/******************************************************************************/
-BOOL FASTCALL comProc_FuncDeclare(U16 flags, S16 *brackCnt)
+
+
+BOOL comProc_FuncDeclare(U16 flags, S16 *brackCnt)
 {
 	int type,subtype;
  	U16 funcFlags = 0;
@@ -180,8 +180,6 @@ BOOL FASTCALL comProc_FuncDeclare(U16 flags, S16 *brackCnt)
         //	SeekPastBraceBlock();
     }
 
-
     return TRUE;
 }
-/******************************************************************************/
 

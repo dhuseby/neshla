@@ -1,19 +1,19 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
 #ifndef preprocessH
 #define preprocessH
-/******************************************************************************/
+
 #include "prepbase.h"
 #include "getcode.h"
-/******************************************************************************/
+
 enum _PREPROCESS_KEYWORDS {
 
 	PREPROCESS_SETPAD,
@@ -46,7 +46,6 @@ enum _PREPROCESS_KEYWORDS {
 
     PREPROCESS_TOTAL,
 };
-
 
 enum _PREPROCESS_TELL {
 	PREPROCESS_TELL_BANK,
@@ -90,12 +89,11 @@ enum _PREPROCESS_INTERRUPT {
 	PREPROCESS_INTERRUPT_START,
 	PREPROCESS_INTERRUPT_IRQ,
 };
-/******************************************************************************/
-void FASTCALL EnterIfDef(BOOL RESULT);
-void FASTCALL ReleaseIfDef(void);
-BOOL FASTCALL InFalseIfDef(void);
-/******************************************************************************/
-BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt);
+
+void  EnterIfDef(BOOL RESULT);
+void  ReleaseIfDef(void);
+BOOL  InFalseIfDef(void);
+BOOL  comProc_Preprocess(U16 flags, S16 *brackCnt);
 
 typedef struct {
  	char *label;
@@ -103,7 +101,6 @@ typedef struct {
 } STRNAMELIST;
 
 extern STRNAMELIST szPreprocess[];
-/******************************************************************************/
+
 #endif
-/******************************************************************************/
 

@@ -1,6 +1,7 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
@@ -224,7 +225,6 @@
 #define opSBC_ABX		0xFD
 #define opINC_ABX		0xFE
 
-
 typedef struct {
 	int index,mask;
 	char *name;
@@ -233,7 +233,6 @@ typedef struct {
 } OPARGS;
 	
 extern OPARGS opArgs[prtTOTAL];
-	
 
 typedef struct {
 	char name[4];
@@ -244,7 +243,5 @@ typedef struct {
 
 extern OPCODE opcodes[opTOTAL_UNIQUE];
 
-/*****************************************************************************/
 #endif
-/*****************************************************************************/
 

@@ -1,20 +1,20 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
 #include <stdlib.h>
 #include <stdarg.h>
 #include "compiler.h"
-/******************************************************************************/
+
 int errorCnt,warnCnt,todoCnt;
 BOOL COMPILE_SUCCESS;
-/******************************************************************************/
+
 char *szErrors[] = {
     "#: %s",
 	"Invalid expression: "QSTR"",
@@ -271,12 +271,13 @@ char *szNotice[] = {
 	"DEBUG: %s",
 	"Compile: Successful",
 };
-/******************************************************************************/
+
 FILE *logFile;
 int curline;
 S32 lpos;
 U8 *cpos;
-/******************************************************************************/
+
+
 void InitMessages()
 {
     char log[1024];
@@ -285,7 +286,8 @@ void InitMessages()
 	logFile = fopen(log, "w");
     curline = -1;
 }
-/******************************************************************************/
+
+
 void ShutDownMessages()
 {
 	if(logFile) {
@@ -293,26 +295,28 @@ void ShutDownMessages()
         logFile = NULL;
     }
 }
-/******************************************************************************/
+
 
 #define PRINT_EMSG(STRINGS)\
     if(scr) {\
     	while(scr->parent&&!scr->path) {\
-        	printf("Within \"%s\": (%d),\n\t", scr->filename, scr->line); \
+        	printf("Within \"%s\": (%d),\n\t", scr->filename, (int)scr->line); \
             scr = scr->parent;\
         }\
-        printf("%s (%d: %d): ", scr->filename, scr->line, GetLineCharsEx(scr->buffer,scr->inPtr)); \
+        printf("%s (%d: %d): ", scr->filename, (int)scr->line, GetLineCharsEx(scr->buffer,scr->inPtr)); \
     }                                                                                            \
     va_start(argptr, errnum);                                                                    \
 	vprintf(STRINGS[errnum], argptr);                                                            \
     va_end(argptr);
+
 
 void msgQuit(void)
 {
     ShutDownCompiler();
     bexit(1);
 }
-/*----------------------------------------------------------------------------*/
+
+
 void error(int errnum, ...)
 {
 	va_list argptr;
@@ -322,12 +326,25 @@ void error(int errnum, ...)
     COMPILE_SUCCESS = FALSE;
 
 	PRINT_EMSG(szErrors);
+/*
+    if(scr) {
+        while(scr->parent && !scr->path) {
+            printf("Within \"%s\": (%d),\n\t", scr->filename, (int)scr->line);
+            scr = scr->parent;
+        }
+        printf("%s (%d: %d): ", scr->filename, (int)scr->line, GetLineCharsEx(scr->buffer, scr->inPtr));
+    }
+    va_start(argptr, errnum);
+    vprintf(szErrors[errnum], argptr);
+    va_end(argptr);
+*/
     printf("!");
 
     if(errorCnt++ >= cfg.msg.error.max)
 		msgQuit();;
 }
-/*----------------------------------------------------------------------------*/
+
+
 void errorf(char *filename, int line, int errnum, ...)
 {
 	va_list argptr;
@@ -337,9 +354,9 @@ void errorf(char *filename, int line, int errnum, ...)
 
     if(filename) {
         printf("%s (%d): ", filename, line);
-    }                                                                                            \
-    va_start(argptr, errnum);                                                                    \
-	vprintf(szErrors[errnum], argptr);                                                            \
+    } 
+    va_start(argptr, errnum); 
+	vprintf(szErrors[errnum], argptr); 
     va_end(argptr);
 
     printf("!");
@@ -347,7 +364,8 @@ void errorf(char *filename, int line, int errnum, ...)
     if(errorCnt++ >= cfg.msg.error.max)
 		msgQuit();
 }
-/*----------------------------------------------------------------------------*/
+
+
 void fatal(int errnum, ...)
 {
 	va_list argptr; 
@@ -361,7 +379,8 @@ void fatal(int errnum, ...)
         
     msgQuit();
 }
-/*----------------------------------------------------------------------------*/
+
+
 void warning(int errnum, ...)
 {
 	va_list argptr;
@@ -377,7 +396,8 @@ void warning(int errnum, ...)
          	msgQuit();
     }
 }
-/*----------------------------------------------------------------------------*/
+
+
 void notice(int msg, char *str, ...)
 {
 	va_list argptr;
@@ -388,10 +408,10 @@ void notice(int msg, char *str, ...)
         	printf("\n[Tell: %s]: ", szPreprocess[PREPROCESS_TELL].members[msg]);
     	if(scr) {
     		while(scr->parent&&!scr->path) {
-        		printf("Within \"%s\": (%d),\n\t", scr->filename, scr->line);
+        		printf("Within \"%s\": (%d),\n\t", scr->filename, (int)scr->line);
             	scr = scr->parent;
         	}
-        	printf("%s (%d: %d): ", scr->filename, scr->line, GetLineCharsEx(scr->buffer,scr->inPtr));
+        	printf("%s (%d: %d): ", scr->filename, (int)scr->line, GetLineCharsEx(scr->buffer,scr->inPtr));
     	}
 
 		printf("\n\t");
@@ -403,7 +423,8 @@ void notice(int msg, char *str, ...)
          	msgQuit();
     }
 }
-/*----------------------------------------------------------------------------*/
+
+
 void todo(char *str)
 {
     if(!PRECOMPILING && cfg.msg.todo.enabled) {
@@ -412,7 +433,8 @@ void todo(char *str)
          	msgQuit();
     }
 }
-/*----------------------------------------------------------------------------*/
+
+
 void message(int errnum, ...)
 {
 	va_list argptr;
@@ -430,7 +452,7 @@ void message(int errnum, ...)
     if(errnum==1) {
     	if(scr) {
         	while(scr->parent&&!scr->path) scr = scr->parent;
-        	printf("%s (%d: %d): ", scr->filename, scr->line, GetLineCharsEx(scr->buffer,scr->inPtr));
+        	printf("%s (%d: %d): ", scr->filename, (int)scr->line, GetLineCharsEx(scr->buffer,scr->inPtr));
     	}
     	va_start(argptr, errnum);
         s = va_arg(argptr, char*);
@@ -445,7 +467,8 @@ void message(int errnum, ...)
 		PRINT_EMSG(szNotice);
     }
 }
-/******************************************************************************/
+
+
 void logprint(char *s, ...)
 {                       /*
 	va_list argptr;
@@ -454,7 +477,8 @@ void logprint(char *s, ...)
     vfprintf(logFile,s, argptr);
     va_end(argptr);   */
 }      
-/******************************************************************************/
+
+
 void logenter()
 {            /*
     INSCRIPT *scr = curScript;
@@ -467,7 +491,8 @@ void logenter()
         cpos = rCode.ptr;
 	}      */
 }
-/******************************************************************************/
+
+
 void logexit()
 {           /*
     INSCRIPT *scr = curScript;
@@ -490,11 +515,11 @@ void logexit()
 
     logenter();  */
 }
-/******************************************************************************/
+
+
 void bexit(int code)
 {
 	message(0,"");
     exit(code);
 }
-/******************************************************************************/
 

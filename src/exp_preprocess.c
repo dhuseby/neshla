@@ -1,61 +1,59 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
 #include "data.h"
+
 /******************************************************************************
  * Handles #preprocessor expressions and enums
  ******************************************************************************/
-#pragma package(smart_init)
-/******************************************************************************/
 
 STRNAMELIST szPreprocess[] = {
-    {{"setpad"}, {""}},
-    {{"align"}, {""}},
+    { "setpad",     {""}},
+    { "align",      {""}},
 
-	{{"define"}, {""}},
-	{{"undef"}, {""}},
+	{"define",      {""}},
+	{"undef",       {""}},
 
-    {{"ifdef"}, {""}},
-    {{"ifndef"}, {""}},
-    {{"else"}, {""}},
-    {{"endif"}, {""}},
+    {"ifdef",       {""}},
+    {"ifndef",      {""}},
+    {"else",        {""}},
+    {"endif",       {""}},
 
-    {{"todo"}, {""}},
-    {{"warning"}, {""}},
-    {{"error"}, {""}},
-    {{"fatal"}, {""}},
-    {{"tell"},
+    {"todo",        {""}},
+    {"warning",     {""}},
+    {"error",       {""}},
+    {"fatal",       {""}},
+    {"tell",
     	{"bank", "bankoffset", "banksize", "bankfree", "banktype", ""}},
 
-    {{"include"}, {""}},
-    {{"incbin"}, {""}},
-    {{"usepath"}, {""}},
+    {"include",     {""}},
+    {"incbin",      {""}},
+    {"usepath",     {""}},
 
-    {{"ram"},
+    {"ram",
     	{"org", "end", ""}},
 
-    {{"rom"},
+    {"rom",
     	{"org", "end", "banksize", "bank", ""}},
 
-    {{"chr"},
+    {"chr",
     	{"banksize", "bank", "end", ""}},
 
-    {{"ines"},
+    {"ines",
     	{"mapper", "mirroring", "battery", "trainer", "fourscreen", "prgrepeat", "chrrepeat", "off",""}},
 
-    {{"interrupt"},
+    {"interrupt",
     	{"nmi","start","irq", ""}},
 
-    {{""},{""}},
+    {"",            {""}},
 };
 
 STRINT siMirroring[] = {
@@ -82,8 +80,9 @@ STRINT siYesNo[] = {
 
   	{"",			0},
 };
-/******************************************************************************/
-void FASTCALL EnterIfDef(BOOL RESULT)
+
+
+void EnterIfDef(BOOL RESULT)
 {
  	IFDEF *ifdef = (IFDEF*)ssAlloc(sizeof(IFDEF));
 
@@ -92,8 +91,9 @@ void FASTCALL EnterIfDef(BOOL RESULT)
     ifdef->RESULT			= RESULT;
     ifdef->ELSE				= FALSE;
 }
-/******************************************************************************/
-void FASTCALL ReleaseIfDef()
+
+
+void ReleaseIfDef()
 {
  	IFDEF *ifdef;
     if(curScript->ifdefTrack) {
@@ -102,13 +102,15 @@ void FASTCALL ReleaseIfDef()
         curScript->ifdefTrack = ifdef;
     }
 }  
-/******************************************************************************/
-BOOL FASTCALL InFalseIfDef()
+
+
+BOOL InFalseIfDef()
 {
  	return(curScript->ifdefTrack && !curScript->ifdefTrack->RESULT);
 }
-/******************************************************************************/
-int FASTCALL StrInPrep(char *str, STRNAMELIST *prep)
+
+
+int StrInPrep(char *str, STRNAMELIST *prep)
 {
 	char *s;
     int cnt=0;
@@ -120,7 +122,8 @@ int FASTCALL StrInPrep(char *str, STRNAMELIST *prep)
     }
     return -1;
 }
-/******************************************************************************/
+
+
 int CheckSubList(int code)
 {
 	if(GetNextWord()[0]=='.') {
@@ -130,8 +133,9 @@ int CheckSubList(int code)
      	return -1;
     }
 }
-/******************************************************************************/
-int FASTCALL PreprocessCheckYesNo(BOOL *_PREP_OK)
+
+
+int PreprocessCheckYesNo(BOOL *_PREP_OK)
 {
 	int val = 0;
 	if(GetNextWord()[0]=='"') {
@@ -150,8 +154,9 @@ int FASTCALL PreprocessCheckYesNo(BOOL *_PREP_OK)
 		error(ERR_INTEXP);
     return val;
 }
-/******************************************************************************/
-BOOL FASTCALL PreprocessInterrupt(int code)
+
+
+BOOL PreprocessInterrupt(int code)
 {
 	FUNC *func;
     U8 *oldPtr;
@@ -207,9 +212,10 @@ BOOL FASTCALL PreprocessInterrupt(int code)
 
     return TRUE;
 }
-/******************************************************************************/
+
+
 // preprocessor directives
-BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
+BOOL comProc_Preprocess(U16 flags, S16 *brackCnt)
 {
 	BOOL PREP_OK=FALSE;
     int code;
@@ -261,7 +267,7 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
     	return FALSE;
 	}
 	switch(code = StrInPrep(GetNextWord(),szPreprocess)) {
-		/**********************************************************************/
+		
      	case PREPROCESS_SETPAD:
         	if(InFalseIfDef()) break;
 
@@ -281,7 +287,7 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
            		error(ERR_INTEXP);
 
         	break;
-		/*--------------------------------------------------------------------*/
+		
      	case PREPROCESS_ALIGN:
         	if(InFalseIfDef()) break;
 
@@ -294,7 +300,6 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
 
         	break;
 
-		/**********************************************************************/
      	case PREPROCESS_INCLUDE:
         	if(InFalseIfDef()) break;
 
@@ -306,7 +311,7 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
             error(ERR_STRINGEXP);
 
         	break;
-		/*--------------------------------------------------------------------*/
+		
      	case PREPROCESS_INCBIN:
         	// "filename"[,maxsize]
         	if(InFalseIfDef()) break;
@@ -329,7 +334,7 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
             error(ERR_STRINGEXP);
 
         	break;
-		/*--------------------------------------------------------------------*/
+		
      	case PREPROCESS_USEPATH:
         	// "pathname"
         	if(InFalseIfDef()) break;
@@ -345,7 +350,6 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
 
         	break;
 
-		/**********************************************************************/
      	case PREPROCESS_DEFINE:
         	if(InFalseIfDef()) break;
                                       
@@ -354,8 +358,8 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
             USE_DEFS = TRUE;
             PREP_OK = TRUE;
         	break;
-		/*--------------------------------------------------------------------*/
-     	case PREPROCESS_UNDEF:
+     	
+        case PREPROCESS_UNDEF:
         	if(InFalseIfDef()) break;
                                       
             USE_DEFS = FALSE;
@@ -365,24 +369,24 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
             PREP_OK = TRUE;
 
         	break;
-		/*--------------------------------------------------------------------*/
-     	case PREPROCESS_IFDEF:
+     	
+        case PREPROCESS_IFDEF:
         	if(InFalseIfDef()) break;
             USE_DEFS = FALSE;
         	EnterIfDef(FindDefine(defList,GetNextWord())!=NULL);
             USE_DEFS = TRUE;
             PREP_OK = TRUE;
         	break;
-		/*--------------------------------------------------------------------*/
-     	case PREPROCESS_IFNDEF:
+     	
+        case PREPROCESS_IFNDEF:
         	if(InFalseIfDef()) break;
             USE_DEFS = FALSE;
         	EnterIfDef(FindDefine(defList,GetNextWord())==NULL);
             USE_DEFS = TRUE;
             PREP_OK = TRUE;
         	break;
-		/*--------------------------------------------------------------------*/
-     	case PREPROCESS_ELSE:
+     	
+        case PREPROCESS_ELSE:
         	if(!curScript->ifdefTrack || curScript->ifdefTrack->ELSE) {
              	error(ERR_PREPELSEUNEXP);
             } else {
@@ -392,14 +396,13 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
                 
             PREP_OK = TRUE;
         	break;
-		/*--------------------------------------------------------------------*/
-     	case PREPROCESS_ENDIF:
+     	
+        case PREPROCESS_ENDIF:
             //TODO fix this
         	ReleaseIfDef();
             PREP_OK = TRUE;
         	break;
 
-		/**********************************************************************/
      	case PREPROCESS_TODO:
      	case PREPROCESS_WARNING:
      	case PREPROCESS_ERROR:
@@ -427,7 +430,6 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
 
         	break;
 
-		/**********************************************************************/
      	case PREPROCESS_TELL:
         	if(InFalseIfDef()) break;
         	PREP_OK = TRUE;
@@ -462,7 +464,6 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
             }
         	break;
 
-		/**********************************************************************/
      	case PREPROCESS_RAM:   
         	if(InFalseIfDef()) break;
         	PREP_OK = TRUE;
@@ -496,7 +497,6 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
                 }
         	break;
 
-		/**********************************************************************/
      	case PREPROCESS_ROM: 
         	if(InFalseIfDef()) break;
         	PREP_OK = TRUE;
@@ -563,7 +563,6 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
             }
         	break;
 
-		/**********************************************************************/
      	case PREPROCESS_CHR:   
         	if(InFalseIfDef()) break;
         	PREP_OK = TRUE;
@@ -608,7 +607,6 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
             }
         	break;
 
-		/**********************************************************************/
      	case PREPROCESS_INES:
         	if(InFalseIfDef()) break;
         	PREP_OK = TRUE;
@@ -679,7 +677,6 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
             }
         	break;
 
-		/**********************************************************************/
      	case PREPROCESS_INTERRUPT:  
         	if(InFalseIfDef()) break;
         	PREP_OK = TRUE;
@@ -695,7 +692,6 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
             }
         	break;
 
-		/**********************************************************************/
         default:
      		error(ERR_PREPROCESSORID,szTemp);
     }
@@ -704,5 +700,4 @@ BOOL FASTCALL comProc_Preprocess(U16 flags, S16 *brackCnt)
 
     return TRUE;
 }
-/******************************************************************************/
 

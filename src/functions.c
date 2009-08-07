@@ -1,20 +1,19 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
+
 /******************************************************************************
  * Handles variables
  ******************************************************************************/
-#pragma package(smart_init)
-/******************************************************************************/
+
 FUNC *functions,*curFunction,*curMacro,*macker;
 char *szFuncTypes[] = {
 	"function","interrupt","inline",""
@@ -22,8 +21,9 @@ char *szFuncTypes[] = {
 char *szIntTypes[] = {
 	"nmi","start","irq",""
 };
-/******************************************************************************/
-void 	FASTCALL FreeParameters(PARAM **pparams)
+
+
+void FreeParameters(PARAM **pparams)
 {
 	PARAM *params=*pparams,*next;
 	if(params) {
@@ -37,8 +37,9 @@ void 	FASTCALL FreeParameters(PARAM **pparams)
 		*pparams = NULL;
 	}
 }
-/******************************************************************************/
-void 	FASTCALL FreeFunctions(FUNC **pfunc)
+
+
+void FreeFunctions(FUNC **pfunc)
 {
 	FUNC *func=*pfunc,*next;
 	if(func) {
@@ -58,8 +59,9 @@ void 	FASTCALL FreeFunctions(FUNC **pfunc)
 		*pfunc = NULL;
 	}
 }
-/******************************************************************************/
-FUNC *	FASTCALL AddFunction(char *label, U16 type)
+
+
+FUNC * AddFunction(char *label, U16 type)
 {
 	FUNC *newfunc;
 
@@ -115,15 +117,17 @@ FUNC *	FASTCALL AddFunction(char *label, U16 type)
 
     return newfunc;
 }
-/******************************************************************************/
-FUNC* 	FASTCALL ReleaseCurFunc()
+
+
+FUNC * ReleaseCurFunc()
 {
 	if(curFunction)
     	curFunction = curFunction->parent;
     return curFunction;
 }
-/******************************************************************************/
-PARAM* 	FASTCALL CloneParams(PARAM *params)
+
+
+PARAM * CloneParams(PARAM *params)
 {
 	PARAM *newparams = NULL,*prev=NULL,*np=NULL;
 	if(params) {
@@ -150,8 +154,9 @@ PARAM* 	FASTCALL CloneParams(PARAM *params)
     }
     return np;
 }
-/******************************************************************************/
-FUNC* 	FASTCALL MakeCurMacro(FUNC *ofmac)
+
+
+FUNC * MakeCurMacro(FUNC *ofmac)
 {
 	FUNC *newmac;
 
@@ -170,13 +175,15 @@ FUNC* 	FASTCALL MakeCurMacro(FUNC *ofmac)
 
     return newmac;
 }
-/******************************************************************************/
-FUNC* 	FASTCALL SetCurMacro(FUNC *ofmac)
+
+
+FUNC * SetCurMacro(FUNC *ofmac)
 {
     return curMacro=ofmac;
 }
-/******************************************************************************/
-FUNC* 	FASTCALL ReleaseCurMacro()
+
+
+FUNC * ReleaseCurMacro()
 {
 	FUNC *next;
 	if(curMacro) {
@@ -190,39 +197,40 @@ FUNC* 	FASTCALL ReleaseCurMacro()
     }
     return curMacro;
 }
-/******************************************************************************/
 
-FUNC* 	FASTCALL FindFirstFunction(FUNC *func)
+
+FUNC * FindFirstFunction(FUNC *func)
 {
     while(func && func->prev)
         func = func->prev;
     return func;
 }
-/******************************************************************************/
 
-FUNC* 	FASTCALL FindFirstCurFunc()
+
+FUNC * FindFirstCurFunc()
 {
 	FUNC *func = curFunction;
     while(func && func->parent)
         func = func->parent;
     return func;
 }
-/******************************************************************************/
 
-FUNC* 	FASTCALL FindFunction(FUNC *func, char *label)
+
+FUNC * FindFunction(FUNC *func, char *label)
 {
     while(func && STRCMP(func->label,label))
         func = func->prev;
     return func;
 }
-/******************************************************************************/
 
-int 	FASTCALL IsFuncType(char *label)
+
+int IsFuncType(char *label)
 {
     return StrInList(label,szFuncTypes);
 }
-/******************************************************************************/
-PARAM *	FASTCALL AddParameter(FUNC *func, char *str)
+
+
+PARAM * AddParameter(FUNC *func, char *str)
 {
 	PARAM *param;
 
@@ -236,9 +244,9 @@ PARAM *	FASTCALL AddParameter(FUNC *func, char *str)
 
     return param;
 }
-/******************************************************************************/
 
-PARAM* 	FASTCALL FindParameterIndex(PARAM *param,int idx)
+
+PARAM * FindParameterIndex(PARAM *param,int idx)
 {
 	PARAM *paramstart = param;
 	int total = 0;
@@ -262,8 +270,9 @@ PARAM* 	FASTCALL FindParameterIndex(PARAM *param,int idx)
 
     return param;
 }
-/******************************************************************************/
-PARAM *	FASTCALL SetParameter(FUNC *func, int num, char *str)
+
+
+PARAM * SetParameter(FUNC *func, int num, char *str)
 {
 	PARAM *param = func->params;
 	int total = 0;
@@ -291,5 +300,4 @@ PARAM *	FASTCALL SetParameter(FUNC *func, int num, char *str)
 
     return param;
 }
-/******************************************************************************/
 

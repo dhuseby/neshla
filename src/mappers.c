@@ -1,20 +1,18 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
+
 /******************************************************************************
  * board names and mapper numbers
  ******************************************************************************/
-#pragma package(smart_init)
-/******************************************************************************/
 
 STRINT siMappers[] = {
 
@@ -295,8 +293,6 @@ STRINT siMappers[] = {
   	
   	{"Sachen 74LS374N",				243},
 
-
   	{"",			0},
 };
-/******************************************************************************/
  

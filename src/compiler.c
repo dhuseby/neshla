@@ -1,24 +1,22 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby, <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include <unistd.h>
 #include <time.h>
 #include "compiler.h"
-/******************************************************************************/
-#pragma package(smart_init)
+
 #define CLK_TCK CLOCKS_PER_SEC
-/******************************************************************************/
 
 void PrintTime(void);
-/******************************************************************************/
+
+
 int main(int argc, char* argv[])
 {
 	int c,i,l;
@@ -102,7 +100,8 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-/******************************************************************************/
+
+
 BOOL DoCompile(char *szFilename)
 {
 	BOOL result;
@@ -114,7 +113,8 @@ BOOL DoCompile(char *szFilename)
     }
     return result;
 }
-/******************************************************************************/
+
+
 void PrintTime()
 {
 	time_t t;
@@ -125,64 +125,5 @@ void PrintTime()
 
     message(0,"");
 	message(0,"%s", s);
-
-    //free(s);
 }
-/******************************************************************************/
 
-                /*
-    FILE *f = fopen("e:\\neshla\\_design\\mappershtml.txt","w");
-
-    STRINT *si = siMappers, **sip, *sp;
-    int cnt=0;
-    STRINT **sints;
-    while(si->string[0]) {
-        si++;
-        cnt++;
-    }
-    sints = (STRINT**)malloc(sizeof(STRINT*)*cnt);
-    sip = sints;
-    si = siMappers;;
-    while(si->string[0]) {
-        *sip++ = si;
-        si++;
-    }
-
-    moo:
-    i = 1;
-    while(i<cnt) {
-        if(strcmp(sints[i-1]->string,sints[i]->string)>0) {
-         	sp = sints[i-1];
-            sints[i-1] = sints[i];
-            sints[i] = sp;
-            goto moo;
-        }
-        i++;
-    }
-
-    i = 0;
-    while(i<cnt) {
-    	si = sints[i++];
-    	fprintf(f,"<tr bgcolor=\"#FFFFF0\" class=\"NormalText\">");
-    	fprintf(f,"<td><div align=\"left\">%s</div></td>", si->string);
-    	fprintf(f,"<td><div align=\"left\">%d</div></td>", si->index);
-    	fprintf(f,"</tr>\n");
-        si++;
-    }
-    fclose(f);
-
-    free(sints);  */
-
-/*
-
-    FILE *f = fopen("e:\\neshla\\_design\\condhtml.txt","w");
-
-    i = 0;
-    while(siConditions[i].string[0]) {
-    	fprintf(f,"<tr bgcolor=\"#FFFFF0\">");
-    	fprintf(f,"<td><div align=\"left\" class=\"NormalText\">%s</div></td>", siConditions[i].string);
-    	fprintf(f,"<td><div align=\"left\" class=\"txcode\">%s</div></td>", GetOpcodeName(siConditions[i].index));
-    	fprintf(f,"</tr>\n");
-        i++;
-    }
-    fclose(f);*/

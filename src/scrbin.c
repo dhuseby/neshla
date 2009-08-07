@@ -1,28 +1,26 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
-/******************************************************************************/
-#pragma package(smart_init)
-/******************************************************************************/
+
 ROMHEADER romHeader;
 FILE *fSrcList;
-/******************************************************************************/
+
 void InitROMHeader()
 {             /*
 	romHeader.mapper	= 0;
 	romHeader.mirroring	= 0; */
     memset(&romHeader,0,sizeof(romHeader));
 }
-/******************************************************************************/
+
+
 void fprintvar(FILE *f, VAR *var, char *szStart, int indent)
 {
     VAR *vp;
@@ -35,7 +33,7 @@ void fprintvar(FILE *f, VAR *var, char *szStart, int indent)
 
 	while(var) {
         fprintf(f,"%04X: (%-4d)",
-            var->offset, var->size);
+            (unsigned int)var->offset, var->size);
         if(var->arraySize)
         	fprintf(f,"[%-4d]: ",var->arraySize);
         else
@@ -56,7 +54,8 @@ void fprintvar(FILE *f, VAR *var, char *szStart, int indent)
 		var = var->next;
 	}
 }
-/******************************************************************************/
+
+
 void fprintfunc(FILE *f, FUNC *func, char *szStart, int indent)
 {
     FUNC *fp;
@@ -72,7 +71,7 @@ void fprintfunc(FILE *f, FUNC *func, char *szStart, int indent)
         if(func->type==FUNCTYPE_INLINE)
         	fprintf(f,"----: ");
         else
-        	fprintf(f,"%04X: ", func->offset);
+        	fprintf(f,"%04X: ", (unsigned int)func->offset);
     	for(i=0;i<indent;i++)
         	fprintf(f,"\t");
         fprintf(f,"%s\t%s(",
@@ -95,7 +94,8 @@ void fprintfunc(FILE *f, FUNC *func, char *szStart, int indent)
 		func = func->next;
 	}
 }
-/******************************************************************************/
+
+
 void fprintbank(FILE *f, BANK *bank, char *szStart, int indent)
 {
     char *sz;
@@ -106,11 +106,11 @@ void fprintbank(FILE *f, BANK *bank, char *szStart, int indent)
 	while(bank) {
     	fprintf(f,"%s\t%s\n",szBankTypes[bank->type],bank->label);
     	fprintf(f,"\tORG: $%04X, END: $%04X, SIZE: %5d / MAX SIZE: %5d, FREE: %5d, ",
-        	bank->org,
-            (BANK_OFFSET(bank)+bank->org),
-            (BANK_OFFSET(bank)),
-            bank->maxsize,
-            bank->maxsize-(BANK_OFFSET(bank))
+        	(unsigned int)bank->org,
+            (unsigned int)(BANK_OFFSET(bank)+bank->org),
+            (unsigned int)(BANK_OFFSET(bank)),
+            (unsigned int)bank->maxsize,
+            (int)bank->maxsize - (int)(BANK_OFFSET(bank))
         );
         switch(bank->type) {
          	case BANKTYPE_ROM:
@@ -128,7 +128,8 @@ void fprintbank(FILE *f, BANK *bank, char *szStart, int indent)
 	fprintf(f,"Total PRG bytes free: $%08X (%d)\n",totalfreeprg,totalfreeprg);
 	fprintf(f,"Total CHR bytes free: $%08X (%d)\n",totalfreechr,totalfreechr);
 }
-/******************************************************************************/
+
+
 void WritePRG(FILE *f, S32 prgSize)
 {
 	FWriteBanks(BANKTYPE_ROM,f);
@@ -146,7 +147,8 @@ void WritePRG(FILE *f, S32 prgSize)
         }
     }
 }
-/******************************************************************************/
+
+
 void WriteCHR(FILE *f, S32 chrSize)
 {
     FWriteBanks(BANKTYPE_CHR,f);
@@ -154,7 +156,8 @@ void WriteCHR(FILE *f, S32 chrSize)
     while(chrSize++<romHeader.chrCount)
     	FPutB(GetPadChar(),f);
 }
-/******************************************************************************/
+
+
 S32 PadUp(S32 len)
 {
 	S32 n=1,c, m=0;
@@ -167,7 +170,8 @@ S32 PadUp(S32 len)
     }
     return len;
 }
-/******************************************************************************/
+
+
 void AssembleScriptBinary()
 {
     FILE *f, *fp, *fc;
@@ -253,7 +257,7 @@ void AssembleScriptBinary()
 
     DoFixOffs(fixOffs);
 
-    if((f = OpenFile(DIR_GAME,SwapFileExt(curScript->filename,".NES"),"wb"))==NULL) {
+    if((f = OpenFile(DIR_GAME,SwapFileExt(curScript->filename,".nes"),"wb"))==NULL) {
     	 fatal(FTL_SAVINGRESOURCE,szTemp);
     }
     if(cfg.output.rawPrgChr) {
@@ -282,5 +286,4 @@ void AssembleScriptBinary()
 
     CloseFile(f);
 }
-/******************************************************************************/
 

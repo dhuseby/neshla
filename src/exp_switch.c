@@ -1,19 +1,19 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
+
 /******************************************************************************
  * Handles the switch/case expressions
  ******************************************************************************/
-#pragma package(smart_init)
+
 enum switchMode {
  	SWITCHMODE_CMP,
     SWITCHMODE_CPX,
@@ -24,8 +24,9 @@ char *szCaseOps[] = {
     "CPX",
     "CPY"
 };
-/******************************************************************************/
-BOOL FASTCALL comProc_Switch(U16 flags, S16 *_brackCnt)
+
+
+BOOL comProc_Switch(U16 flags, S16 *_brackCnt)
 {
 	BOOL	FAR_BRANCH;
     BANK 	*bank;
@@ -125,8 +126,9 @@ BOOL FASTCALL comProc_Switch(U16 flags, S16 *_brackCnt)
 
     return TRUE;
 }
-/******************************************************************************/
-BOOL FASTCALL CheckNearFar()
+
+
+BOOL CheckNearFar()
 {
     PeekNextWord();
     if(!STRCMP(szTemp,"far")) {  
@@ -138,8 +140,9 @@ BOOL FASTCALL CheckNearFar()
     }
     return FALSE;
 }
-/******************************************************************************/
-BOOL FASTCALL DoCaseBlock(U16 flags)
+
+
+BOOL DoCaseBlock(U16 flags)
 {
     S16		brackCnt = 0;
 
@@ -147,8 +150,9 @@ BOOL FASTCALL DoCaseBlock(U16 flags)
 
     return TRUE;
 }
-/******************************************************************************/
-void FASTCALL AddBranchPos(BRANCHLIST **branches, int mode)
+
+
+void AddBranchPos(BRANCHLIST **branches, int mode)
 {
 	BRANCHLIST *b = (BRANCHLIST*)ssAlloc(sizeof(BRANCHLIST));
 
@@ -160,8 +164,9 @@ void FASTCALL AddBranchPos(BRANCHLIST **branches, int mode)
 
 	*branches	= b;
 }
-/******************************************************************************/
-void FASTCALL WriteBranches(BRANCHLIST **branches)
+
+
+void WriteBranches(BRANCHLIST **branches)
 {
 	BRANCHLIST *b = *branches,*next=NULL;
     S32 offset = GetBankOffset(), noffset;
@@ -185,5 +190,5 @@ void FASTCALL WriteBranches(BRANCHLIST **branches)
     }
     *branches = NULL;
 }
-/******************************************************************************/
+
 

@@ -1,23 +1,20 @@
 /***************************************************************************
  *  NESHLA: The Nintendo Entertainment System High Level Assembler
  *  Copyright (C) 2003,2004,2005 Brian Provinciano, http://www.bripro.com
+ *  Copyright (C) 2009 David Huseby <dave@linuxprogrammer.org>
  *
  *  This program is free software. 
  *	You may use this code for anything you wish.
  *	It comes with no warranty.
  ***************************************************************************/
 
-/******************************************************************************/
-#pragma hdrstop
 #include "compiler.h"
-/******************************************************************************/
-#pragma package(smart_init)
-/******************************************************************************/ 
+
 S32 scriptNumber;
 INSCRIPT *firstScript,*curScript;
 BOOL PRECOMPILING;
-/******************************************************************************/
-INSCRIPT *FASTCALL AddScript(INSCRIPT *parent, char *filename, DEFINE *def, FUNC *macro)
+
+INSCRIPT * AddScript(INSCRIPT *parent, char *filename, DEFINE *def, FUNC *macro)
 {
 	INSCRIPT *scr;
     char *path;
@@ -87,8 +84,9 @@ INSCRIPT *FASTCALL AddScript(INSCRIPT *parent, char *filename, DEFINE *def, FUNC
     
 	return scr;
 }     
-/******************************************************************************/
-INSCRIPT *FASTCALL DiscardScript(INSCRIPT *scr)
+
+
+INSCRIPT * DiscardScript(INSCRIPT *scr)
 {
 	INSCRIPT *parent=NULL;
 	if(scr) {
@@ -99,13 +97,17 @@ INSCRIPT *FASTCALL DiscardScript(INSCRIPT *scr)
         	fprintf(fSrcList,"\tSpanning Bank(s) %s to %s\n",
             	scr->location.bank->label, curBank?curBank->label:"-");
         	fprintf(fSrcList,"\tStart Bank @ Bin: $%08X, Org: $%04X, Offset: $%04X\n",
-            	GetBankBinOffset(scr->location.bank), scr->location.bank->org,BANK_OFFSET_OF(scr->location.bank,scr->location.ptr));
+            	(unsigned int)GetBankBinOffset(scr->location.bank), 
+                (unsigned int)scr->location.bank->org,
+                (unsigned int)BANK_OFFSET_OF(scr->location.bank,scr->location.ptr));
         	if(curBank)
             	fprintf(fSrcList,"\tEnd   Bank @ Bin: $%08X, Org: $%04X, Offset: $%04X\n",
-            		GetBankBinOffset(curBank),curBank->org,BANK_OFFSET(curBank));
+            		(unsigned int)GetBankBinOffset(curBank),
+                    (unsigned int)curBank->org,
+                    (unsigned int)BANK_OFFSET(curBank));
             size = GetBankBinLength(scr->location.bank, scr->location.ptr, curBank);
         	fprintf(fSrcList,"\tSize   in Binary: $%08X (%02f KBytes)\n",
-            	size,(float)size/1024.0);
+            	(unsigned int)size,(float)size/1024.0);
         }
 
     	/*TODO fix this: if( (!(scr->flags&SCRFLAG_CLONE)) && (scr->path) && (scr->ifdefCount) )
@@ -134,8 +136,9 @@ INSCRIPT *FASTCALL DiscardScript(INSCRIPT *scr)
     }
     return parent;
 }     
-/******************************************************************************/
-INSCRIPT *FASTCALL CloneScript(INSCRIPT *scr)
+
+
+INSCRIPT * CloneScript(INSCRIPT *scr)
 {
 	INSCRIPT *clone=NULL;
 	if(scr) {
@@ -153,8 +156,9 @@ INSCRIPT *FASTCALL CloneScript(INSCRIPT *scr)
     }
     return clone;
 }  
-/******************************************************************************/
-INSCRIPT *FASTCALL FindScript(INSCRIPT *scr, char *path, char *filename)
+
+
+INSCRIPT * FindScript(INSCRIPT *scr, char *path, char *filename)
 {
 	while(scr) {
     	if( !strcmp(scr->filename,filename) &&
@@ -164,8 +168,9 @@ INSCRIPT *FASTCALL FindScript(INSCRIPT *scr, char *path, char *filename)
     }
     return scr;
 }
-/******************************************************************************/
-SCRIPTSTATE *FASTCALL SaveScriptState()
+
+
+SCRIPTSTATE * SaveScriptState()
 {
  	SCRIPTSTATE *state = (SCRIPTSTATE*) ssAlloc(sizeof(SCRIPTSTATE)); 
     INSCRIPT *scr;
@@ -188,8 +193,9 @@ SCRIPTSTATE *FASTCALL SaveScriptState()
     }
     return state;
 }        
-/******************************************************************************/
-void FASTCALL RestoreScriptState(SCRIPTSTATE **pstate)
+
+
+void RestoreScriptState(SCRIPTSTATE **pstate)
 {
 	SCRIPTSTATE *state=*pstate;
     INSCRIPT *scr;
@@ -210,12 +216,14 @@ void FASTCALL RestoreScriptState(SCRIPTSTATE **pstate)
     	ssFree(*pstate);
     }
 }   
-/******************************************************************************/
-void FASTCALL DiscardScriptState(SCRIPTSTATE **pstate)
+
+
+void DiscardScriptState(SCRIPTSTATE **pstate)
 {
 }
-/******************************************************************************/
-BOOL FASTCALL CompileScript(char *filename, DEFINE *def, FUNC *macro)
+
+
+BOOL CompileScript(char *filename, DEFINE *def, FUNC *macro)
 {
     SCRIPTSTATE *state;
     S16 brackCnt;
@@ -285,5 +293,4 @@ BOOL FASTCALL CompileScript(char *filename, DEFINE *def, FUNC *macro)
     }
     return TRUE;
 }
-/******************************************************************************/
 
