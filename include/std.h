@@ -13,9 +13,9 @@
 
 //DEFINES
 
-#define	TRUE	1
-#define	FALSE	0
- 
+#define TRUE 1
+#define FALSE 0
+
 /******************************************************************************/
 
 //8 BIT ASSIGNMENTS
@@ -84,7 +84,7 @@
 
 #include "std_bitwise.h"
 
-//ADDITION		
+//ADDITION
 // add(dest,value)
 // add_x(dest,value)
 // add_16_8_a(dest)
@@ -191,10 +191,10 @@
 // memset_inline( memdest, value, memsize)
 
 //FUNCTIONS
-// function	memcpy()
-// function	memset()
-// function	clear_ram()
-// function	clear_nametable()
+// function memcpy()
+// function memset()
+// function clear_ram()
+// function clear_nametable()
 
 #include "std_memory.h"
 

@@ -37,8 +37,8 @@
 
 /******************************************************************************
  * STACK MACROS
- ******************************************************************************/	
-	
+ ******************************************************************************/
+
 /******************************************************************************
  * pushes a value of REG.A to the stack
  */
@@ -66,90 +66,90 @@ inline toss16()
 
 /******************************************************************************
  * pushes value to the stack
- *	value:	Memory location of 8bit variable, 8bit immediate value
+ * value: Memory location of 8bit variable, 8bit immediate value
  */
 inline push(value)
 {
-	lda value
+    lda value
     pusha()
 }
 
 /******************************************************************************
  * pushes the value of src[x] to the stack
- *	src:	Memory location of 8bit variable
+ * src: Memory location of 8bit variable
  */
 inline push_x(src)
 {
-	lda src,x
+    lda src,x
     pusha()
 }
 
 /******************************************************************************
  * pushes the value of src to the stack
- *	src:	Memory location of 16bit variable
+ * src: Memory location of 16bit variable
  */
 inline push_16(src)
 {
-	lda src+0
+    lda src+0
     pusha()
-	lda src+1
+    lda src+1
     pusha()
 }
 
 /******************************************************************************
  * pushes the value of src[x] to the stack
- *	src:	Memory location of 16bit variable
+ * src: Memory location of 16bit variable
  */
 inline push_16_x(src)
 {
-	lda src+0,x
+    lda src+0,x
     pusha()
-	lda src+1,x
+    lda src+1,x
     pusha()
 }
 
 /******************************************************************************
  * pops a value from the stack and stores it in dest
- *	dest:	Memory location of 8bit variable
+ * dest: Memory location of 8bit variable
  */
 inline pop(dest)
 {
     popa()
-	sta dest
+    sta dest
 }
 
 /******************************************************************************
  * pops a value from the stack and stores it in dest[x]
- *	dest:	Memory location of 8bit variable
+ * dest: Memory location of 8bit variable
  */
 inline pop_x(dest)
 {
     popa()
-	sta dest,x
+    sta dest,x
 }
 
 /******************************************************************************
  * pops a value from the stack and stores it in dest
- *	dest:	Memory location of 16bit variable
+ * dest: Memory location of 16bit variable
  */
 inline pop_16(dest)
 {
     popa()
-	sta dest+1
+    sta dest+1
     popa()
-	sta dest+0
+    sta dest+0
 }
 
 /******************************************************************************
  * pops a value from the stack and stores it in dest[x]
- *	dest:	Memory location of 16bit variable
+ * dest: Memory location of 16bit variable
  */
 inline pop_16_x(dest)
 {
     popa()
-	sta dest+1,x
+    sta dest+1,x
     popa()
-	sta dest+0,x
+    sta dest+0,x
 }
 
 /******************************************************************************
@@ -167,7 +167,7 @@ inline peek()
  */
 inline pushx()
 {
-	txa
+    txa
     pusha()
 }
 
@@ -195,7 +195,7 @@ inline peekx()
  */
 inline pushy()
 {
-	tya
+    tya
     pusha()
 }
 
@@ -231,7 +231,7 @@ inline pushp()
  */
 inline popp()
 {
-	plp
+    plp
 }
 
 /******************************************************************************
@@ -239,8 +239,8 @@ inline popp()
  */
 inline pushsp()
 {
-	tsx
-	pushx()
+    tsx
+    pushx()
 }
 
 /******************************************************************************
@@ -248,8 +248,8 @@ inline pushsp()
  */
 inline popsp()
 {
-	popx()
-	txs
+    popx()
+    txs
 }
 
 /******************************************************************************
@@ -268,9 +268,9 @@ inline push_all()
  */
 inline pop_all()
 {
-	popy()
-	popx()
-	popa()
+    popy()
+    popx()
+    popa()
     popp()
 }
 

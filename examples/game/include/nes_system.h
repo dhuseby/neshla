@@ -28,13 +28,13 @@
 
 inline enable_interrupts()
 {
-	cli	// clear interrupt disable
+    cli // clear interrupt disable
 }
 /******************************************************************************/
 
 inline disable_interrupts()
 {
-	sei	// set interrupt disable
+    sei // set interrupt disable
 }
 
 
@@ -42,13 +42,13 @@ inline disable_interrupts()
 
 inline enable_decimal_mode()
 {
-	sei	// set decimal mode
+    sei // set decimal mode
 }
 /******************************************************************************/
 
 inline disable_decimal_mode()
 {
-	cld	// clear decimal mode
+    cld // clear decimal mode
 }
 
 
@@ -56,13 +56,13 @@ inline disable_decimal_mode()
 
 inline set_carry_flag()
 {
-	sec	// set the carry flag
+    sec // set the carry flag
 }
 /******************************************************************************/
 
 inline clear_carry_flag()
 {
-	clc	// clear the carry flag
+    clc // clear the carry flag
 }
 
 
@@ -70,45 +70,45 @@ inline clear_carry_flag()
 
 inline reset_stack()
 {
-	ldx #0xFF	// reset the stack pointer
-	txs
+    ldx #0xFF // reset the stack pointer
+    txs
 }
 
 /******************************************************************************/
 
 inline nes_reset()
 {
-	jmp [$FFFC]
+    jmp [$FFFC]
 }
 
 /******************************************************************************/
 inline system_initialize()
 {
-	disable_decimal_mode()
-	disable_interrupts()
-	
-	reset_stack()		// this is why this MUST be inline!
-	
-	vblank_wait()
-	
-	// clear the registers
-	lda		#0 
-	
-	sta		PPU.CNT0
-	sta		PPU.CNT1
-	
-	sta		PPU.BG_SCROLL
-	sta		PPU.BG_SCROLL
-	
-	sta		PCM_CNT
-	sta		PCM_VOLUMECNT
-	sta		SND_CNT
-	
-	lda		#0xC0
-	sta		joystick.cnt1
-	
-	
-	enable_interrupts()
+    disable_decimal_mode()
+    disable_interrupts()
+
+    reset_stack()  // this is why this MUST be inline!
+
+    vblank_wait()
+
+    // clear the registers
+    lda  #0
+
+    sta  PPU.CNT0
+    sta  PPU.CNT1
+
+    sta  PPU.BG_SCROLL
+    sta  PPU.BG_SCROLL
+
+    sta  PCM_CNT
+    sta  PCM_VOLUMECNT
+    sta  SND_CNT
+
+    lda  #0xC0
+    sta  joystick.cnt1
+
+
+    enable_interrupts()
 }
 
 /******************************************************************************/
