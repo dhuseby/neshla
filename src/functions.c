@@ -254,7 +254,7 @@ PARAM * AddParameter(FUNC *func, char *str)
 {
     PARAM *param;
 
-    param = (PARAM*)ssAlloc(sizeof(param));
+    param = (PARAM*)ssAlloc(sizeof(PARAM));
 
     param->prev  = func->params;
     func->params = param;
