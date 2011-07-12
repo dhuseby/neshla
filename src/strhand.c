@@ -242,8 +242,9 @@ char *GetNextWordFunc(BOOL GETCHAR,BOOL ERRORS)
         default:
             if (b[0]=='0'&&b[1]=='x')
             {
-                *s++ = *b++;
-                *s++ = *b++;
+                *s++ = '$';
+                *s++ = '0';
+                b+=2;
                 HEXSTR = TRUE;
             }
             // Ich Will du catchz der ints ONLY!!
